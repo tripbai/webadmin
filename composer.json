@@ -1,0 +1,24 @@
+{
+    "name": "osboxes/webadmin",
+    "description": "just store adminship",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Osboxes\\Webadmin\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Kenjie Terrado",
+            "email": "terradoflex@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "kenjiefx/scratch-php": "dev-main",
+        "kenjiefx/venta-css": "dev-main",
+        "kenjiefx/pluncext": "dev-main",
+        "kenjiefx/themepack": "dev-main"
+    }
+}

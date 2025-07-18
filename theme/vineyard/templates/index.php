@@ -1,0 +1,1 @@
+<div class="color:error-strong">The quick brown fox jumps over the lazy dog</div>

@@ -1,0 +1,37 @@
+{
+    "padding": {
+        "rule": "padding:{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "padding-x": {
+        "rule": "padding-left:{value}em;padding-right:{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "padding-y": {
+        "rule": "padding-top:{value}em;padding-bottom:{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "padding-left": {
+        "rule": "padding-left:{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "padding-right": {
+        "rule": "padding-right:{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "padding-top": {
+        "rule": "padding-top:{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "padding-bottom": {
+        "rule": "padding-bottom:{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    }
+}

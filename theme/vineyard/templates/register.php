@@ -1,0 +1,1 @@
+<?php component('RegistrationForms/BasicRegistrationForm'); ?>
