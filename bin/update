@@ -57,7 +57,7 @@ function updateSuperFiles(string $dir, string $superDir, array &$report, array $
                 if (hasFileContentChanged($filePath, $superFilePath)) {
                     echo "\033[33m  Updated: {$shortenedPath}\033[0m\n"; // Yellow
                     $report['updated_files']++;
-                    copy($filePath, $superFilePath);
+                    # copy($filePath, $superFilePath);
                 }
             } else {
                 echo "\033[32m  Added: {$shortenedPath}\033[0m\n";   // Green

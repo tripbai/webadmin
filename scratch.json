@@ -1,11 +1,10 @@
 {
-    "theme": "vineyard",
+    "theme": "voltage",
     "exportDir": "\/dist",
     "build": {
         "useRandomAssetsFileNames": true
     },
     "extensions": {
-        "Kenjiefx\\Themepack\\ThemePackExtension": {},
         "Kenjiefx\\VentaCSS\\Integrations\\Scratch\\VentaScratchExtension":{},
         "Kenjiefx\\Pluncext\\PluncExtension": {
             "autoTsc": true,

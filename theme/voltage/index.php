@@ -16,9 +16,10 @@
     <body class="width:24">
         <app plunc-app="app" class="width:24 height:24 display:block"></app>
         <template plunc-name="app">
-            <?php component('Themepack/AppRouter'); ?>
+            <main plunc-component="App"></main>
         </template>
-        <?php Kenjiefx\Pluncext\API\Component::export(); ?>
-        <?php block('Themepack/ColorPicker'); ?>
+        <template plunc-name="App">
+            <?php template_content(); ?>
+        </template>
     </body>
 </html>
