@@ -1,0 +1,67 @@
+{
+    "left": {
+        "rule": "left:{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "top": {
+        "rule": "top:{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "right": {
+        "rule": "right:{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "bottom": {
+        "rule": "bottom:{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "left-": {
+        "rule": "left:-{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "top-": {
+        "rule": "top:-{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "right-": {
+        "rule": "right:-{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "bottom-": {
+        "rule": "bottom:-{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "left-px": {
+        "rule": "left:{value}px",
+        "type": "count",
+        "values": [0, 24]
+    },
+    "top-px": {
+        "rule": "top:{value}px",
+        "type": "count",
+        "values": [0, 24]
+    },
+    "right-px": {
+        "rule": "right:{value}px",
+        "type": "count",
+        "values": [0, 24]
+    },
+    "bottom-px": {
+        "rule": "bottom:{value}px",
+        "type": "count",
+        "values": [0, 24]
+    },
+    "z-index-": {
+        "rule": "z-index:-{value}",
+        "type": "count",
+        "values": [0, 24]
+    }
+}

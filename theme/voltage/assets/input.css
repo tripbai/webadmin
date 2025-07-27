@@ -1,0 +1,9 @@
+input:focus {
+    outline: none;
+}
+textarea:focus {
+    outline: none;
+}
+[data-style="@wrapper:input"]:focus-within {
+    border-color: var(--default-border-color-primary-strong);
+}

@@ -1,0 +1,27 @@
+{
+    "text-small": {
+        "rule": "font-size:{value}em",
+        "type": "minmax",
+        "values": [0.4, 0.799]
+    },
+    "text": {
+        "rule": "font-size:{value}em",
+        "type": "minmax",
+        "values": [0.8, 1.599]
+    },
+    "medium-text": {
+        "rule": "font-size:{value}em",
+        "type": "minmax",
+        "values": [1.6, 2.399]
+    },
+    "large-text": {
+        "rule": "font-size:{value}em",
+        "type": "minmax",
+        "values": [2.4, 3.199]
+    },
+    "extra-large-text": {
+        "rule": "font-size:{value}em",
+        "type": "minmax",
+        "values": [3.2, 3.999]
+    }
+}

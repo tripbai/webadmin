@@ -1,0 +1,128 @@
+#!/usr/bin/env php
+<?php 
+
+define('ROOT', dirname(__DIR__));
+define('ORGROOT', dirname(dirname(__DIR__)));
+define('SUPEROOT', dirname(ORGROOT));
+
+function isIgnoredByGit(string $packageDir, string $filePath) {
+    // Retrieve git ignore file, if not exist, return false
+    $gitIgnorePath = "{$packageDir}/.gitignore";
+    if (!file_exists($gitIgnorePath)) {
+        return false; // No .gitignore file, so not ignored
+    }
+    $gitIgnoreContent = file_get_contents($gitIgnorePath);
+    $gitIgnoreLines = explode("\n", $gitIgnoreContent);
+    $filePath = str_replace($packageDir, '', $filePath); // Make path relative to package directory
+    foreach ($gitIgnoreLines as $line) {
+        $line = trim($line);
+        if ($line === '' || $line[0] === '#') continue; // Skip empty lines and comments
+        // Check if the file path matches the ignore pattern
+        if (fnmatch($line, $filePath)) {
+            return true; // File is ignored by git
+        }
+    }
+}
+
+function hasFileContentChanged(string $filePath, string $superFilePath): bool {
+    if (!file_exists($superFilePath)) {
+        return true; // Super file does not exist, so content is considered changed
+    }
+    $localContent = file_get_contents($filePath);
+    // Remove all line breaks
+    $localContent = str_replace(["\r", "\n"], '', $localContent);
+    $superContent = file_get_contents($superFilePath);
+    $superContent = str_replace(["\r", "\n"], '', $superContent);
+    return $localContent !== $superContent;
+}
+
+function updateSuperFiles(string $dir, string $superDir, array &$report, array $metadata){
+    foreach (scandir($dir) as $file) {
+        if ($file === '.' || $file === '..') continue;
+        $filePath = "{$dir}/{$file}";
+        if (is_dir($filePath)) {
+            if (!is_dir("{$superDir}/{$file}")) {
+                mkdir("{$superDir}/{$file}", 0755, true);
+            }
+            updateSuperFiles($filePath, "{$superDir}/{$file}", $report, $metadata);
+        } else {
+            $report['total_files']++;
+            $superFilePath = "{$superDir}/{$file}";
+            // Check if super file path is ignored by super package dir git ignore
+            if (isIgnoredByGit($metadata['package_dir'], $filePath)) {
+                continue; // Skip files ignored by git
+            }
+            $shortenedPath = str_replace($metadata['package_dir'], '', $filePath);
+            if (file_exists($superFilePath)) {
+                if (hasFileContentChanged($filePath, $superFilePath)) {
+                    echo "\033[33m  Updated: {$shortenedPath}\033[0m\n"; // Yellow
+                    $report['updated_files']++;
+                    copy($filePath, $superFilePath);
+                }
+            } else {
+                echo "\033[32m  Added: {$shortenedPath}\033[0m\n";   // Green
+                # copy($filePath, $superFilePath);
+                $report['added_files']++;
+            }
+        }
+    }
+}
+
+function deleteSuperFiles(string $dir, string $superDir, array &$report, array $metadata) {
+    foreach (scandir($superDir) as $file) {
+        if ($file === '.' || $file === '..') continue;
+        $superFilePath = "{$superDir}/{$file}";
+        $filePath = "{$dir}/{$file}";
+        if (is_dir($superFilePath)) {
+            deleteSuperFiles($filePath, $superFilePath, $report, $metadata);
+        } else {
+            $shortenedPath = str_replace($metadata['package_dir'], '', $filePath);
+            if (isIgnoredByGit($metadata['package_dir'], $filePath)) {
+                continue; // Skip files ignored by git
+            }
+            if (!file_exists($filePath)) {
+                echo "\033[31m  Deleted: {$shortenedPath}\033[0m\n"; // Red
+                # unlink($superFilePath);
+                $report['deleted_files']++;
+            }
+        }
+    }
+}
+
+$vendorDirs = ROOT . '/vendor';
+foreach (scandir($vendorDirs) as $vendorName) {
+    if ($vendorName === '.' || $vendorName === '..') continue;
+    $superVendorDir = SUPEROOT . "/{$vendorName}";
+    if (is_dir($superVendorDir)) {
+        foreach (scandir($superVendorDir) as $packageName) {
+            if ($packageName === '.' || $packageName === '..') continue;
+            $superPackageDirSrc = $superVendorDir . "/{$packageName}/src";
+            $packageDir = "{$vendorDirs}/{$vendorName}/{$packageName}";
+            $packageDirSrc =  "{$packageDir}/src";
+            if (is_dir($packageDirSrc)) {
+                // color gray 
+                echo "\033[90mFound {$vendorName}/{$packageName}...\033[0m\n";
+                $metadata = [
+                    "package_dir" => $packageDir,
+                ];
+                $report = [
+                    "total_files" => 0,
+                    "added_files" => 0,
+                    "updated_files" => 0,
+                    "deleted_files" => 0,
+                ];
+                updateSuperFiles($packageDirSrc, $superPackageDirSrc, $report, $metadata);
+                deleteSuperFiles($packageDirSrc, $superPackageDirSrc, $report, $metadata);
+                if ($report['added_files'] > 0) {
+                    echo "    Added files: {$report['added_files']}\n";
+                }
+                if ($report['updated_files'] > 0) {
+                    echo "    Updated files: {$report['updated_files']}\n";
+                }
+                if ($report['deleted_files'] > 0) {
+                    echo "    Deleted files: {$report['deleted_files']}\n";
+                }
+            } 
+        }
+    }
+}

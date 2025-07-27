@@ -1,0 +1,22 @@
+{
+    "name": "tripbai/webadmin",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Tripbai\\Webadmin\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Kenjie Terrado",
+            "email": "terradoflex@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "kenjiefx/scratch-php": "dev-main",
+        "kenjiefx/venta-css": "dev-main",
+        "kenjiefx/pluncext": "dev-main"
+    }
+}

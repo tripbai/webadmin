@@ -1,0 +1,57 @@
+{
+    "margin": {
+        "rule": "margin:{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "margin-x": {
+        "rule": "margin-left:{value}em;margin-right:{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "margin-y": {
+        "rule": "margin-top:{value}em;margin-bottom:{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "margin-left": {
+        "rule": "margin-left:{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "margin-right": {
+        "rule": "margin-right:{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "margin-top": {
+        "rule": "margin-top:{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "margin-bottom": {
+        "rule": "margin-bottom:{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "margin-left-": {
+        "rule": "margin-left:-{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "margin-right-": {
+        "rule": "margin-right:-{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "margin-top-": {
+        "rule": "margin-top:-{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    },
+    "margin-bottom-": {
+        "rule": "margin-bottom:-{value}em",
+        "type": "minmax",
+        "values": [0.01, 2]
+    }
+}

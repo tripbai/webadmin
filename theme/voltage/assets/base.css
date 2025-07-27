@@ -1,0 +1,18 @@
+* {margin:0;padding:0;box-sizing:border-box;}
+#main {display:none; transition: 0.5s;}
+ul {list-style-type:none;}
+body { background-color: #fffef752; }
+body.dark {
+    background-color: var(--default-background-color-dark);
+}
+body, input, textarea, button, h1, h2, h3, h4, h5, h6, p {
+    font-family: 'Inter', Helvetica, sans-serif; 
+    color: var(--default-color-dark); 
+    letter-spacing: -0.043px; 
+    line-height: 1.466em; 
+    font-size: 0.933em; 
+    font-weight: normal;
+}
+body.dark, body.dark dialog, .dark input, .dark textarea, .dark button, .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6, .dark p {
+    color: var(--dark-color-dark);
+}
