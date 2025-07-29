@@ -5,11 +5,11 @@
         "useRandomAssetsFileNames": true
     },
     "extensions": {
-        "Kenjiefx\\VentaCSS\\Integrations\\Scratch\\VentaScratchExtension":{},
         "Kenjiefx\\Pluncext\\PluncExtension": {
             "autoTsc": true,
             "obfuscateHandlers": true,
             "minify": true
-        }
+        },
+        "Kenjiefx\\VentaCSS\\Integrations\\Scratch\\VentaScratchExtension":{}
     }
 }
