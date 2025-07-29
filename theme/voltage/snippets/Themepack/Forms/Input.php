@@ -5,7 +5,8 @@ $classlist = [
     "@input" => [],
     "@icon:left:wrapper" => [],
     "@icon:right:wrapper:success" => [],
-    "@icon:right:wrapper:error" => []
+    "@icon:right:wrapper:error" => [],
+    "@icon:left:y:spacer" => []
 ];
 $html = [
     "@icon:left" => "",
@@ -31,6 +32,7 @@ $classlist["@wrapper:input"][] = "align-items:center";
 $classlist["@input"][] = "border-style:none";
 $classlist["@input"][] = "width:24";
 $classlist["@input"][] = $snippet["background:color"] ?? "background-color:transparent";
+$classlist["@icon:left:y:spacer"][] = "concrete-height-extra-small:15";
 
 
 // Adds border to input wrapper, if enabled
@@ -72,7 +74,7 @@ if (isset($snippet["icon:left"])) {
     snippet("Themepack/Icons/SVG", [
         "path" => $snippet["icon:left"]["path"],
         "class" => implode(" ", $__icon_left_classlist),
-        "stroke:width" => $snippet["icon:left"]["stroke:width"] ?? "1.0",
+        "stroke:width" => $snippet["icon:left"]["stroke:width"] ?? "1.5",
         "use:gradient" => $snippet["icon:left"]["use:gradient"] ?? false,
     ]);
     $html["@icon:left"] = ob_get_contents();
@@ -102,7 +104,7 @@ if (isset($snippet["icon:right:success"])) {
     snippet("Themepack/Icons/SVG", [
         "path" => $snippet["icon:right:success"]["path"],
         "class" => implode(" ", $__icon_classlist),
-        "stroke:width" => $snippet["icon:right:success"]["stroke:width"] ?? "1.0",
+        "stroke:width" => $snippet["icon:right:success"]["stroke:width"] ?? "1.5",
         "use:gradient" => $snippet["icon:right:success"]["use:gradient"] ?? false,
     ]);
     $html["@icon:right:success"] = ob_get_contents();
@@ -132,7 +134,7 @@ if (isset($snippet["icon:right:error"])) {
     snippet("Themepack/Icons/SVG", [
         "path" => $snippet["icon:right:error"]["path"],
         "class" => implode(" ", $__icon_classlist),
-        "stroke:width" => $snippet["icon:right:error"]["stroke:width"] ?? "1.0",
+        "stroke:width" => $snippet["icon:right:error"]["stroke:width"] ?? "1.5",
         "use:gradient" => $snippet["icon:right:error"]["use:gradient"] ?? false,
     ]);
     $html["@icon:right:error"] = ob_get_contents();
@@ -152,6 +154,7 @@ switch ($snippet["size"]) {
         $classlist["@wrapper:input"][] = $snippet["padding:bottom"] ?? "padding-bottom:5";
         $classlist["@wrapper:input"][] = $snippet["padding:left"] ?? "padding-left:6";
         $classlist["@wrapper:input"][] = $snippet["padding:right"] ?? "padding-right:6";
+        $classlist["@wrapper:input"][] = "concrete-height-extra-small:15";
         break;
 }
 
@@ -160,9 +163,11 @@ $__input_classlist = implode(" ", $classlist["@input"]);
 $__icon_right_wrapper_success_classlist = implode(" ", $classlist["@icon:right:wrapper:success"]);
 $__icon_right_wrapper_error_classlist = implode(" ", $classlist["@icon:right:wrapper:error"]);
 $__icon_left_wrapper_classlist = implode(" ", $classlist["@icon:left:wrapper"]);
+$__icon_left_y_spacer_classlist = implode(" ", $classlist["@icon:left:y:spacer"]);
 
 echo <<<HTML
     <div plunc-block="{$blockname}" class="{$__wrapper_input_classlist}" data-style="@wrapper:input" data-style-id="{$styleId}">
+        <div class="{$__icon_left_y_spacer_classlist}"></div>
         <div class="--icon-left {$__icon_left_wrapper_classlist}">
             {$html['@icon:left']}
         </div>

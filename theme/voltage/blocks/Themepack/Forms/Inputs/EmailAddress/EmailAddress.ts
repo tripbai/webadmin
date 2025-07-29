@@ -41,14 +41,15 @@ export class EmailAddress {
                     await inputElement.loading()
                     try {
                         await this.validator(this.props.Themepack_Forms_Inputs_EmailAddress.value)
+                        await inputElement.clear()
+                    } catch (error) {
+                        console.error(error)
                         await inputElement.error()
                         await this.simpleMessage.setMessage(
                             'Themepack_Forms_Inputs_EmailAddress',
-                            'test error only',
+                            error.message,
                             'error'
                         )
-                    } catch (error) {
-                        await inputElement.error()
                     }
                     return
                 }
