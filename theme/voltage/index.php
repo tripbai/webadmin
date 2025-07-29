@@ -13,10 +13,10 @@
         <script type="text/javascript"> const blockAutoSubmit=e=>e.preventDefault(); </script>
         <?php template_assets(); ?>
     </head>
-    <body class="width:24">
-        <app plunc-app="app" class="width:24 height:24 display:block"></app>
+    <body class="width:24 height:24">
+        <app plunc-app="app" class="width:24 height:24"></app>
         <template plunc-name="app">
-            <main plunc-component="App"></main>
+            <main plunc-component="App" class="width:24"></main>
         </template>
         <template plunc-name="App">
             <?php template_content(); ?>

@@ -43,4 +43,16 @@ export class SimpleMessage {
         
     }
 
+    clearMessage(namespace: string): Promise<void> {
+        const blockName = `${namespace}/Themepack_Alerts_SimpleMessage`
+        return new Promise(resolve => {
+            this.blockService.get(blockName, blockElement => {
+                blockElement.$element.innerHTML = ''
+                blockElement.removeClass(this.colorPicker.getSuccessTextClassName())
+                blockElement.removeClass(this.colorPicker.getErrorTextClassName())
+            })
+            resolve()
+        })
+    }
+
 }

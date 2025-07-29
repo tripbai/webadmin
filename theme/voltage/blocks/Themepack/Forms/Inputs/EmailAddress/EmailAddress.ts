@@ -15,6 +15,7 @@ type Scope = {
 export class EmailAddress {
 
     private validator: ((value: string) => Promise<void>) | null = null
+    private messageNamespace: string = 'Themepack_Forms_Inputs_EmailAddress'
 
     constructor(
         private props: ComponentScope<Scope>,
@@ -46,14 +47,15 @@ export class EmailAddress {
                         console.error(error)
                         await inputElement.error()
                         await this.simpleMessage.setMessage(
-                            'Themepack_Forms_Inputs_EmailAddress',
+                            this.messageNamespace,
                             error.message,
                             'error'
                         )
                     }
                     return
                 }
-                await inputElement.error()
+                await inputElement.clear()
+                await this.simpleMessage.clearMessage(this.messageNamespace)
             }
         }
     }

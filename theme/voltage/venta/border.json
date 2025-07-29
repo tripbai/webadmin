@@ -18,5 +18,10 @@
 		"rule": "border-radius:{value}px",
 		"type": "minmax",
 		"values": [100, 300]
+	},
+	"border-top-style": {
+		"rule": "border-top-style:{value}",
+		"type": "list",
+		"values": ["solid", "dashed", "dotted", "double", "groove", "ridge", "inset", "outset"]
 	}
 }

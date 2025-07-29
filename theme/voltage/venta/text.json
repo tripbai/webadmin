@@ -23,5 +23,10 @@
         "rule": "font-size:{value}em",
         "type": "minmax",
         "values": [3.2, 3.999]
-    }
+    },
+    "letter-spacing-": {
+		"rule": "letter-spacing:-{value}px",
+		"type": "minmax",
+		"values": [0.2, 2]
+	}
 }

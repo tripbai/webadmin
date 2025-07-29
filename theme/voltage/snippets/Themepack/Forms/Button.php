@@ -37,17 +37,17 @@ if (isset($snippet["plunc:disable"])) {
 }
 switch ($snippet["size"]) {
     case "medium": 
-        $classlist["@wrapper:main"][] = $snippet["padding:top"] ?? "padding-top:5";
-        $classlist["@wrapper:main"][] = $snippet["padding:bottom"] ?? "padding-bottom:5";
-        $classlist["@wrapper:main"][] = $snippet["padding:left"] ?? "padding-left:7";
-        $classlist["@wrapper:main"][] = $snippet["padding:right"] ?? "padding-right:7";
+        $classlist["@wrapper:main"][] = $snippet["padding:top"] ?? "padding-top:7";
+        $classlist["@wrapper:main"][] = $snippet["padding:bottom"] ?? "padding-bottom:7";
+        $classlist["@wrapper:main"][] = $snippet["padding:left"] ?? "padding-left:9";
+        $classlist["@wrapper:main"][] = $snippet["padding:right"] ?? "padding-right:9";
         break;
     default: 
         // Custom sizing, must be defined in the snippet, if not default to medium
-        $classlist["@wrapper:main"][] = $snippet["padding:top"] ?? "padding-top:5";
-        $classlist["@wrapper:main"][] = $snippet["padding:bottom"] ?? "padding-bottom:5";
-        $classlist["@wrapper:main"][] = $snippet["padding:left"] ?? "padding-left:7";
-        $classlist["@wrapper:main"][] = $snippet["padding:right"] ?? "padding-right:7";
+        $classlist["@wrapper:main"][] = $snippet["padding:top"] ?? "padding-top:7";
+        $classlist["@wrapper:main"][] = $snippet["padding:bottom"] ?? "padding-bottom:7";
+        $classlist["@wrapper:main"][] = $snippet["padding:left"] ?? "padding-left:9";
+        $classlist["@wrapper:main"][] = $snippet["padding:right"] ?? "padding-right:9";
         break;
 }
 // If left icon is set
@@ -66,7 +66,7 @@ if (isset($snippet["icon:left"])) {
         ]
     );
     ob_start();
-    snippet("Icons/SVG", [
+    snippet("Themepack/Icons/SVG", [
         "path" => $snippet["icon:left"]["path"],
         "class" => implode(" ", $__icon_left_classlist),
         "stroke:width" => $snippet["icon:left"]["stroke:width"] ?? "1.5",
@@ -91,7 +91,7 @@ if (isset($snippet["icon:right"])) {
         ]
     );
     ob_start();
-    snippet("Icons/SVG", [
+    snippet("Themepack/Icons/SVG", [
         "path" => $snippet["icon:right"]["path"],
         "class" => implode(" ", $__icon_classlist),
         "stroke:width" => $snippet["icon:right"]["stroke:width"] ?? "1.5",

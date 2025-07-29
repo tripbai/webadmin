@@ -102,5 +102,10 @@
             840,
             1700
         ]
+    },
+    "device-height": {
+        "rule": "height:{value}vh",
+        "type": "minmax",
+        "values": [0, 100]
     }
 }
