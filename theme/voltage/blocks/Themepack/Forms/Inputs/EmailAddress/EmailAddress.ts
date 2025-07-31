@@ -35,17 +35,19 @@ export class EmailAddress {
         this.props.Themepack_Forms_Inputs_EmailAddress = {
             value: value || "",
             validate: async () => {
-                const inputElement = this.inputStateManagerFactory.create(
-                    'Themepack_Forms_Inputs_EmailAddress/Input', this.blockService
-                )
+                const inputBlock = await this.blockService.get<HTMLDivElement>('Themepack_Forms_Inputs_EmailAddress/Input')
+                if (inputBlock === null) {
+                    throw new Error("Email input block not found.")
+                }
+                const inputElement = this.inputStateManagerFactory.create(inputBlock)
                 if (this.validator !== null) {
-                    await inputElement.loading()
+                    inputElement.loading()
                     try {
                         await this.validator(this.props.Themepack_Forms_Inputs_EmailAddress.value)
-                        await inputElement.clear()
+                        inputElement.clear()
                     } catch (error) {
                         console.error(error)
-                        await inputElement.error()
+                        inputElement.error()
                         await this.simpleMessage.setMessage(
                             this.messageNamespace,
                             error.message,
@@ -54,7 +56,7 @@ export class EmailAddress {
                     }
                     return
                 }
-                await inputElement.clear()
+                inputElement.clear()
                 await this.simpleMessage.clearMessage(this.messageNamespace)
             }
         }
@@ -77,7 +79,7 @@ export class EmailAddress {
      * If the email address is not valid, it throws an error.
      * @returns The email address value or null if empty.
      */
-    async get(): Promise<string|null> {
+    async getValue(): Promise<string|null> {
         if (this.validator === null) {
             throw new Error("Please set a validator.")
         }

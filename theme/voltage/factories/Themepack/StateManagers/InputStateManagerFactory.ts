@@ -1,4 +1,5 @@
 import { BlockService } from "../../../interfaces/PluncAPI/BlockService"
+import { PluncElementInterface } from "../../../interfaces/PluncAPI/PluncElement"
 
 export class InputStateManagerFactory {
 
@@ -6,8 +7,8 @@ export class InputStateManagerFactory {
 
     ) {}
 
-    create(blockName: string, blockService: BlockService): InputStateManager {
-        return new InputStateManager(blockName, blockService)
+    create(blockElement: PluncElementInterface<HTMLDivElement>): InputStateManager {
+        return new InputStateManager(blockElement)
     }
 
 }
@@ -15,14 +16,9 @@ export class InputStateManagerFactory {
 class InputStateManager {
 
     /**
-     * The name of the block this input element is associated with.
+     * The wrapper block of the input element
      */
-    blockName: string
-
-    /**
-     * The BlockService instance used to interact with the block system.
-     */
-    blockService: BlockService
+    blockElement: PluncElementInterface<HTMLDivElement>
 
     /**
      * The current state of the input element. Possible values are:
@@ -34,80 +30,74 @@ class InputStateManager {
      */
     state: "error" | "success" | "default" | "loading" | "disabled"
 
-    constructor(blockName: string, blockService: BlockService) {
-        this.blockName = blockName
-        this.blockService = blockService
+    constructor(blockElement: PluncElementInterface<HTMLDivElement>) {
+        this.blockElement = blockElement
         this.state = 'default'
     }
 
-    async error() {
-        await this.clear()
-        const selector = await this.getSelector()
+    error() {
+        this.clear()
+        const selector = this.getSelector()
         const borderCss = `${selector} { border-color: var(--default-color-error-strong); }`
         const svgError  = `${selector} .--icon-left > svg { stroke: var(--default-color-error-strong); }`
         const iconRightError = `${selector} > .--icon-right-error {display: block !important;}`
-        await this.setStyle(`${borderCss} ${svgError} ${iconRightError}`)
+        this.setStyle(`${borderCss} ${svgError} ${iconRightError}`)
     }
 
-    async success(): Promise<void> {
-        await this.clear()
-        const selector = await this.getSelector()
+    success() {
+        this.clear()
+        const selector = this.getSelector()
         const borderCss = `${selector} { border-color: var(--default-color-success-strong); }`
         const svgSuccess = `${selector} .--icon-left > svg { stroke: var(--default-color-success-strong); }`
         const iconRightSuccess = `${selector} > .--icon-right-success {display: block !important;}`
-        await this.setStyle(`${borderCss} ${svgSuccess} ${iconRightSuccess}`)
+        this.setStyle(`${borderCss} ${svgSuccess} ${iconRightSuccess}`)
     }
 
-    async clear(): Promise<void> {
-        await this.setStyle('')
+    clear() {
+        this.setStyle('')
     }
 
-    async loading(): Promise<void> {
-        await this.clear()
-        const inactiveStyle = await this.getInactiveStyle()
-        const selector = await this.getSelector()
+    loading() {
+        this.clear()
+        const inactiveStyle = this.getInactiveStyle()
+        const selector = this.getSelector()
         const spinnerCss = `${selector} > .--themepack-spinner-simple {display: block !important;}`
-        await this.setStyle(`${inactiveStyle} ${spinnerCss}`)
+        this.setStyle(`${inactiveStyle} ${spinnerCss}`)
     }
 
-    async disable(): Promise<void> {
-        await this.clear()
-        const inactiveStyle = await this.getInactiveStyle()
-        await this.setStyle(`${inactiveStyle}`)
+    disable() {
+        this.clear()
+        const inactiveStyle = this.getInactiveStyle()
+        this.setStyle(`${inactiveStyle}`)
     }
 
-    private async getInactiveStyle() {
-        const selector = await this.getSelector()
+    private getInactiveStyle() {
+        const selector = this.getSelector()
         const borderColor = `${selector} { border-color: var(--default-color-grayscale-9); }`
         const backgroundCss = `${selector} { background-color: var(--default-color-grayscale-1); }`
         const inputCss = `${selector} > input { pointer-events: none; opacity: 0.5; }`
         return `${backgroundCss} ${inputCss} ${borderColor}`
     }
 
-    private setStyle(style: string): Promise<void> {
-        return new Promise(resolve => {
-            this.blockService.get(this.blockName, (blockElement) => {
-                const styleElement = blockElement.$element.querySelector('style')
-                if (styleElement !== null) {
-                    styleElement.innerText = style
-                }
-                resolve()
-            })
-        })
+    private setStyle(style: string) {
+        const styleElement = this.blockElement.$element.querySelector('style')
+        if (styleElement !== null) {
+            styleElement.innerText = style
+        }
     }
 
-    private getStyleId(): Promise<string> {
-        return new Promise(resolve => {
-            this.blockService.get(this.blockName, (blockElement) => {
-                const styleId = blockElement.$element.getAttribute('data-style-id')
-                resolve(styleId || '')
-            })
-        })
+    private getStyleId(): string {
+        return this.blockElement.$element.getAttribute('data-style-id') || ''
     }
 
-    async getSelector(): Promise<string> {
-        const styleId = await this.getStyleId()
-        return `[plunc-block="${this.blockName}"][data-style-id="${styleId}"]`
+    private getBlockName(): string {
+        return this.blockElement.$element.getAttribute('plunc-block') || ''
+    }
+
+    getSelector(): string {
+        const blockName = this.getBlockName()
+        const styleId = this.getStyleId()
+        return `[plunc-block="${blockName}"][data-style-id="${styleId}"]`
     }
 
 }

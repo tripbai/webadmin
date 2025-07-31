@@ -1,12 +1,16 @@
 import { PluncElementInterface } from "./PluncElement";
 
 export interface BlockService {
-    get<TElement extends Element>(
+    getAll<TElement extends Element>(
         elementName: string,
         callback: BlockCallback<TElement>
     ): void
+
+    get<TElement extends Element>(
+        elementName: string
+    ): Promise<PluncElementInterface<TElement> | null>
 }
 
 export type BlockCallback<TElement extends Element> = (
-    element: PluncElementInterface<TElement>
+    element: PluncElementInterface<TElement> | null
 ) => void;

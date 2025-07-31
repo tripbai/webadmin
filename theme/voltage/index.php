@@ -9,7 +9,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.46/moment-timezone.min.js" integrity="sha512-Ne/lsUAQFATS+KrR4oPYWUtbM3C0I7eIORtGaC+xOdO/V1g3rfSzUwjsLd9/MkFw6iEqafr78LwrK75iZc3Emw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/kenjiefx/plunc/dist/plunc.0.8.4.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/kenjiefx/plunc/dist/plunc.0.8.6.min.js"></script>
         <script type="text/javascript"> const blockAutoSubmit=e=>e.preventDefault(); </script>
         <?php template_assets(); ?>
     </head>

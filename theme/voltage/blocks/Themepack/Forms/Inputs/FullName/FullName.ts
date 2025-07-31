@@ -35,17 +35,19 @@ export class FullName {
             firstName: firstName,
             lastName: lastName,
             validate: async () => {
-                const firstNameInputElement = this.inputStateManagerFactory.create(
-                    'Themepack_Forms_Inputs_FullName/FirstNameInput', this.blockService
-                )
-                const lastNameInputElement = this.inputStateManagerFactory.create(
-                    'Themepack_Forms_Inputs_FullName/LastNameInput', this.blockService
-                )
+                const firstNameInputBlock = await this.blockService.get<HTMLDivElement>('Themepack_Forms_Inputs_FullName/FirstNameInput')
+                const lastNameInputBlock = await this.blockService.get<HTMLDivElement>('Themepack_Forms_Inputs_FullName/LastNameInput')
+                if (!firstNameInputBlock || !lastNameInputBlock) {
+                    this.simpleMessage.setMessage(
+                        this.namespace, 'Input blocks not found.', 'error'
+                    )
+                    return
+                }
+                const firstNameInputElement = this.inputStateManagerFactory.create(firstNameInputBlock)
+                const lastNameInputElement = this.inputStateManagerFactory.create(lastNameInputBlock)
                 if (this.firstNameValidator === null || this.lastNameValidator === null) {
                     this.simpleMessage.setMessage(
-                        this.namespace,
-                        'No validator function provided.',
-                        'error'
+                        this.namespace, 'No validator function provided.', 'error'
                     )
                     return
                 }
