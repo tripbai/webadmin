@@ -3,6 +3,7 @@ import { Password } from "../../../blocks/Themepack/Forms/Inputs/Password/Passwo
 import { ButtonStateManagerFactory } from "../../../factories/Themepack/StateManagers/ButtonStateManagerFactory";
 import { ComponentScope } from "../../../interfaces/PluncAPI/ComponentScope";
 import { PluncElementInterface } from "../../../interfaces/PluncAPI/PluncElement";
+import { UserDataValidatorInterface } from "../../../interfaces/Users/UserDataValidatorInterface";
 
 export class BasicLoginForm {
 
@@ -10,7 +11,8 @@ export class BasicLoginForm {
         private emailAddressBlock: EmailAddress,
         private passwordBlock: Password,
         private buttonStateManagerFactory: ButtonStateManagerFactory,
-        private props: ComponentScope<BasicLoginFormProps>
+        private props: ComponentScope<BasicLoginFormProps>,
+        private userDataValidator: UserDataValidatorInterface
     ) {}
 
     async render() {
@@ -24,7 +26,7 @@ export class BasicLoginForm {
         console.group(this.props)
         await this.emailAddressBlock.setProps()
         this.emailAddressBlock.setValidator(async (emailAddress) => {
-            throw new Error('invalid email')
+            await this.userDataValidator.validateEmail(emailAddress)
         })
         await this.passwordBlock.setProps()
     }
