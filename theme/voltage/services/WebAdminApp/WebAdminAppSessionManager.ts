@@ -17,15 +17,16 @@ export class WebAdminAppSessionManager implements SessionServiceInterface {
         const locationObject = this.locationFactory.create()
         const currentPagePath = locationObject.pathname
         if (currentPagePath === '/login.html' && userSession !== null && userSession.active) {
-            // Redirect user if already login
-            const redirectValue = this.getRedirectValueInCurrentPageParams()
-            if (redirectValue === null) {
-                locationObject.href = '/index.html'
-                return
+            try {
+                await this.iAuthSessionUserService.refreshSesssion()
+                // Redirect user if already login
+                return this.redirectToMainPage()
+            } catch (error) {
+                // Redirect to login page if refreshing session fails
+                this.iAuthSessionUserService.clearSession()
+                const redirectValue = this.createRedirectValueUsingCurrentPageUrl()
+                locationObject.href = `/login.html?redirect=${redirectValue}`
             }
-            // Redirect to the value in the redirect parameter
-            locationObject.href = redirectValue
-            return
         }
         if (currentPagePath === '/login.html' && userSession === null) {
             // If on login page and no session, do nothing
@@ -39,6 +40,16 @@ export class WebAdminAppSessionManager implements SessionServiceInterface {
         }
         // If user is logged in and not on login page, do nothing
         if (currentPagePath !== '/login.html' && userSession !== null && userSession.active) {
+            try {
+                await this.iAuthSessionUserService.refreshSesssion()
+                // Set an interval
+                this.iAuthSessionUserService.refreshAtInterval(1000 * 60 * 5) // Refresh every 5 minutes
+            } catch (error) {
+                // Redirect to login page if refreshing session fails
+                this.iAuthSessionUserService.clearSession()
+                const redirectValue = this.createRedirectValueUsingCurrentPageUrl()
+                locationObject.href = `/login.html?redirect=${redirectValue}`
+            }
             return
         }
         // If we reach here, something went wrong
@@ -60,6 +71,19 @@ export class WebAdminAppSessionManager implements SessionServiceInterface {
             createdAt: Date.now()
         }
         this.iAuthSessionUserService.createSession(sessionData)
+        this.redirectToMainPage()
+    }
+
+    redirectToMainPage(): void {
+        const locationObject = this.locationFactory.create()
+        const redirectValue = this.getRedirectValueInCurrentPageParams()
+        if (redirectValue === null) {
+            locationObject.href = '/index.html'
+            return
+        }
+        // Redirect to the value in the redirect parameter
+        locationObject.href = redirectValue
+        return
     }
 
     getRedirectValueInCurrentPageParams(): string | null {
