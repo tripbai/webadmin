@@ -8,3 +8,7 @@
     "type" => "submit",
     "icon:right" => ["path" => "/Paths/rocket.svg"]
 ]); ?>
+<div class="margin-y:7"></div>
+<?php block("Themepack/Alerts/SimpleMessage", [
+    "namespace" => "LoginForms_BasicLoginForm_MessageAlert"
+]); ?>

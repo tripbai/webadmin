@@ -43,6 +43,9 @@ export class EmailAddress {
                 if (this.validator !== null) {
                     inputElement.loading()
                     try {
+                        if (this.props.Themepack_Forms_Inputs_EmailAddress.value.trim() === "") {
+                            throw new Error("Email address cannot be empty.")
+                        }
                         await this.validator(this.props.Themepack_Forms_Inputs_EmailAddress.value)
                         inputElement.clear()
                         await this.simpleMessage.clearMessage(this.messageNamespace)
@@ -83,9 +86,6 @@ export class EmailAddress {
     async getValue(): Promise<string|null> {
         if (this.validator === null) {
             throw new Error("Please set a validator.")
-        }
-        if (this.props.Themepack_Forms_Inputs_EmailAddress.value.trim() === "") {
-            return null
         }
         await this.props.Themepack_Forms_Inputs_EmailAddress.validate()
         return this.props.Themepack_Forms_Inputs_EmailAddress.value

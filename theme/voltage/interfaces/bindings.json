@@ -1,3 +1,4 @@
 {
-    "interfaces/Users/UserDataValidatorInterface.ts": "services/IdentityAuthority/Users/UserValidator.ts"
+    "interfaces/Users/UserDataValidatorInterface.ts": "services/IdentityAuthority/Users/UserValidator.ts",
+    "interfaces/Login/LoginServiceInterface.ts": "services/IdentityAuthority/Login/IAuthLoginService.ts"
 }

@@ -1,6 +1,8 @@
+import { SimpleMessage } from "../../../blocks/Themepack/Alerts/SimpleMessage/SimpleMessage";
 import { EmailAddress } from "../../../blocks/Themepack/Forms/Inputs/EmailAddress/EmailAddress";
 import { Password } from "../../../blocks/Themepack/Forms/Inputs/Password/Password";
 import { ButtonStateManagerFactory } from "../../../factories/Themepack/StateManagers/ButtonStateManagerFactory";
+import { LoginServiceInterface } from "../../../interfaces/Login/LoginServiceInterface";
 import { ComponentScope } from "../../../interfaces/PluncAPI/ComponentScope";
 import { PluncElementInterface } from "../../../interfaces/PluncAPI/PluncElement";
 import { UserDataValidatorInterface } from "../../../interfaces/Users/UserDataValidatorInterface";
@@ -12,16 +14,37 @@ export class BasicLoginForm {
         private passwordBlock: Password,
         private buttonStateManagerFactory: ButtonStateManagerFactory,
         private props: ComponentScope<BasicLoginFormProps>,
-        private userDataValidator: UserDataValidatorInterface
+        private userDataValidator: UserDataValidatorInterface,
+        private loginService: LoginServiceInterface,
+        private simpleMessage: SimpleMessage
     ) {}
 
     async render() {
         this.props.submit = async (button: PluncElementInterface<HTMLButtonElement>) => {
-            const emailAddress = await this.emailAddressBlock.getValue()
-            const password = await this.passwordBlock.getValue()
-            console.log({emailAddress, password})
+            const messageAlertNamespace = 'LoginForms_BasicLoginForm_MessageAlert';
             const buttonStateManager = this.buttonStateManagerFactory.create(button)
-            buttonStateManager.freezeButton() 
+            this.simpleMessage.clearMessage(messageAlertNamespace)
+            try {
+                const emailAddress = await this.emailAddressBlock.getValue()
+                const password = await this.passwordBlock.getValue()
+                if (emailAddress === null || password === null) {
+                    throw new Error("")
+                }
+                if (emailAddress.trim() === "" || password.trim() === "") {
+                    throw new Error("")
+                }
+                buttonStateManager.freezeButton() 
+                await this.loginService.loginUsingEmailAndPassword(emailAddress, password)
+                console.log({emailAddress, password})
+            } catch (error) {
+                console.error(error)
+                buttonStateManager.defrostButton()
+                this.simpleMessage.setMessage(
+                    messageAlertNamespace,
+                    'Sorry, your credentials appear to be incorrect. Please try again.',
+                    "error"
+                )
+            }
         }
         console.group(this.props)
         await this.emailAddressBlock.setProps()
