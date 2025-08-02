@@ -1,4 +1,5 @@
 {
     "interfaces/Users/UserDataValidatorInterface.ts": "services/IdentityAuthority/Users/UserValidator.ts",
-    "interfaces/Login/LoginServiceInterface.ts": "services/IdentityAuthority/Login/IAuthLoginService.ts"
+    "interfaces/Login/LoginServiceInterface.ts": "services/IdentityAuthority/Login/IAuthLoginService.ts",
+    "interfaces/Session/SessionServiceInterface.ts": "services/WebAdminApp/WebAdminAppSessionManager.ts"
 }

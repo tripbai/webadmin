@@ -1,13 +1,15 @@
 import { AppConfigurationFactory } from "../../../factories/Configuration/AppConfigurationFactory";
 import { IdentityAuthority } from "../../../interfaces/AppEngine/identity-authority/module/module.interface";
 import { LoginServiceInterface } from "../../../interfaces/Login/LoginServiceInterface";
+import { SessionServiceInterface } from "../../../interfaces/Session/SessionServiceInterface";
 import { HTTPRequestService } from "../../HTTPRequests/HTTPRequestService";
 
 export class IAuthLoginService implements LoginServiceInterface {
 
     constructor(
         private httpRequestService: HTTPRequestService,
-        private appConfigFactory: AppConfigurationFactory
+        private appConfigFactory: AppConfigurationFactory,
+        private sessionService: SessionServiceInterface
     ) {}
 
     async loginUsingEmailAndPassword(email: string, password: string){
@@ -23,6 +25,7 @@ export class IAuthLoginService implements LoginServiceInterface {
             params: {},
             authToken: null
         })
+        this.sessionService.createSession(response)
     }
 
 }

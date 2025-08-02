@@ -37,6 +37,9 @@ export class BasicLoginForm {
                 await this.loginService.loginUsingEmailAndPassword(emailAddress, password)
                 console.log({emailAddress, password})
             } catch (error) {
+                if (error.message === "") {
+                    return
+                }
                 console.error(error)
                 buttonStateManager.defrostButton()
                 this.simpleMessage.setMessage(
