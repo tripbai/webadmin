@@ -19,7 +19,16 @@
             <main plunc-component="App" class="width:24"></main>
         </template>
         <template plunc-name="App">
-            <?php template_content(); ?>
+            <section plunc-if="state=='loading'" class="width:24 device-height:24">
+                <!-- Apply loading screen here -->
+                <?php block('Themepack/LoaderAnimations/PageLoader'); ?>
+            </section>
+            <section plunc-if="state=='active'" class="width:24 height:24">
+                <?php template_content(); ?>
+            </section>
+            <section plunc-if="state=='error'" class="width:24 height:24">
+
+            </section>
         </template>
         <!-- Color Palette -->
         <?php 

@@ -36,6 +36,7 @@ export class WebAdminAppSessionManager implements SessionServiceInterface {
             // Redirect to login page if not logged in
             const redirectValue = this.createRedirectValueUsingCurrentPageUrl()
             locationObject.href = `/login.html?redirect=${redirectValue}`
+            throw new Error('User is not logged in or session is inactive, redirecting to login page')
             return
         }
         // If user is logged in and not on login page, do nothing
