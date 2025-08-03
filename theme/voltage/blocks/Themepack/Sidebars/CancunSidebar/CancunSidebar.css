@@ -1,0 +1,18 @@
+.--cc-nav-link-wrapper-outer:link {
+    color: var(--default-color-grayscale-16); 
+    text-decoration: none;
+}
+
+.--cc-nav-link-wrapper-outer:visited {
+    color: var(--default-color-grayscale-16); 
+    text-decoration: none;
+}
+
+.--cc-nav-link-wrapper-outer:hover {
+    color: var(--default-color-primary-strong); 
+    text-decoration: none;
+}
+
+.--cc-nav-label-type-collapsible {
+    color: var(--default-color-grayscale-16); 
+}
