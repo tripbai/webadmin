@@ -25,8 +25,8 @@ $itemPaddingCss = trim(implode(" ", $itemPaddings));
                         echo '<div class="--cc-nav-link-inner display:flex align-items:center width:24">';
                             $navItem["icon"]["width"] ??= "concrete-width-extra-small:15";
                             $navItem["icon"]["height"] ??= "concrete-height-extra-small:15";
-                            $navItem["icon"]["stroke:color"] ??= "svg-stroke:white";
-                            $navItem["icon"]["fill:color"] ??= "svg-fill:primary-strong";
+                            $navItem["icon"]["stroke:color"] ??= "svg-stroke:primary-strong";
+                            $navItem["icon"]["fill:color"] ??= "svg-fill:none";
                             $navItem["icon"]["classlist"] ??= [];
                             $__icon_classlist = array_merge(
                                 $navItem["icon"]["classlist"],
@@ -41,7 +41,7 @@ $itemPaddingCss = trim(implode(" ", $itemPaddings));
                             snippet("Themepack/Icons/SVG", [
                                 "path" => $navItem["icon"]["path"],
                                 "class" => implode(" ", $__icon_classlist),
-                                "stroke:width" => $navItem["icon"]["stroke:width"] ?? "1.5",
+                                "stroke:width" => $navItem["icon"]["stroke:width"] ?? "1",
                                 "use:gradient" => $navItem["icon"]["use:gradient"] ?? false,
                             ]);
                             echo '<span class="--cc-nav-label text:5">';
@@ -57,8 +57,8 @@ $itemPaddingCss = trim(implode(" ", $itemPaddings));
                             echo '<div class="display:flex align-items:center">';
                                 $navItem["icon"]["width"] ??= "concrete-width-extra-small:15";
                                 $navItem["icon"]["height"] ??= "concrete-height-extra-small:15";
-                                $navItem["icon"]["stroke:color"] ??= "svg-stroke:white";
-                                $navItem["icon"]["fill:color"] ??= "svg-fill:primary-strong";
+                                $navItem["icon"]["stroke:color"] ??= "svg-stroke:primary-strong";
+                                $navItem["icon"]["fill:color"] ??= "svg-fill:none";
                                 $navItem["icon"]["classlist"] ??= [];
                                 $__icon_classlist = array_merge(
                                     $navItem["icon"]["classlist"],
@@ -73,7 +73,7 @@ $itemPaddingCss = trim(implode(" ", $itemPaddings));
                                 snippet("Themepack/Icons/SVG", [
                                     "path" => $navItem["icon"]["path"],
                                     "class" => implode(" ", $__icon_classlist),
-                                    "stroke:width" => $navItem["icon"]["stroke:width"] ?? "1.5",
+                                    "stroke:width" => $navItem["icon"]["stroke:width"] ?? "1",
                                     "use:gradient" => $navItem["icon"]["use:gradient"] ?? false,
                                 ]);
                                 echo '<span class="--cc-nav-label --cc-nav-label-type-collapsible text:5">';
