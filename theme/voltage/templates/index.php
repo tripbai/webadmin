@@ -1,1 +1,1 @@
-Hello index template
+<?php component("Webadmin/Sidebar"); ?>
