@@ -1,6 +1,7 @@
 import { PageLoader } from "../blocks/Themepack/LoaderAnimations/PageLoader/PageLoader";
 import { Header } from "../components/Webadmin/Header/Header";
 import { Sidebar } from "../components/Webadmin/Sidebar/Sidebar";
+import { UsersTable } from "../components/Webadmin/Tables/UsersTable/UsersTable";
 import { SessionServiceInterface } from "../interfaces/Session/SessionServiceInterface";
 import { DocumentQueryService } from "../services/Themepack/DocumentQueryService";
 
@@ -11,7 +12,8 @@ export class App {
         private sessionService: SessionServiceInterface,
         private pageLoader: PageLoader,
         private sidebarComponent: Sidebar,
-        private headerComponet: Header
+        private headerComponet: Header,
+        private usersTable: UsersTable
     ) {}
 
     async bootstrap() {
@@ -29,6 +31,7 @@ export class App {
         await this.pageLoader.showActive()
         await this.sidebarComponent.render()
         await this.headerComponet.render()
+        await this.usersTable.render()
     }
 
 }

@@ -1,0 +1,9 @@
+.--fullname-cell, .--email-cell, .--userid-cell {
+    width: 200px;
+    padding: 0 10px;
+}
+
+.--role-cell, .--status-cell {
+    width: 100px;
+    padding: 0 10px;
+}
