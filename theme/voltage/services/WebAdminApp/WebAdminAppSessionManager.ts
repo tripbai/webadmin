@@ -75,6 +75,12 @@ export class WebAdminAppSessionManager implements SessionServiceInterface {
         this.redirectToMainPage()
     }
 
+    async destroySession(): Promise<void> {
+        const locationObject = this.locationFactory.create()
+        this.iAuthSessionUserService.clearSession()
+        locationObject.href = '/login.html'
+    }
+
     redirectToMainPage(): void {
         const locationObject = this.locationFactory.create()
         const redirectValue = this.getRedirectValueInCurrentPageParams()

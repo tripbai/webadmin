@@ -12,4 +12,9 @@ export interface SessionServiceInterface {
      */
     createSession(sessionData: {[key:string]: any}): Promise<void>
 
+    /**
+     * Can be called after logout.
+     */
+    destroySession(): Promise<void>
+
 }

@@ -1,133 +1,171 @@
 <?php 
-$namespace = "Themepack_Sidebars_CancunSidebar";
-$width = $block["width"] ?? "300px";
-$itemPaddings = [];
-isset($block["padding-top"])    ? array_push($itemPaddings, $block["padding-top"]) : "";
-isset($block["padding-bottom"]) ? array_push($itemPaddings, $block["padding-bottom"]) : "";
-isset($block["padding-left"])   ? array_push($itemPaddings, $block["padding-left"]) : "";
-isset($block["padding-right"])  ? array_push($itemPaddings, $block["padding-right"]) : "";
-$itemPaddingCss = trim(implode(" ", $itemPaddings));
+
+$configuration = [
+    "namespace" => "Themepack_Sidebars_CancunSidebar"
+];
+$css = [
+    "icon" => "concrete-width-extra-small:13 concrete-height-extra-small:13 svg-stroke:primary-strong svg-fill:none margin-left:5 margin-right:5",
+    "item:padding" => ""
+];
+
+if (isset($block["item"])) {
+    $paddings = [];
+    $keys = ["padding-top", "padding-bottom", "padding-left", "padding-right"];
+    foreach ($keys as $key) {
+        if (isset($block["item"][$key]) && !empty($block["item"][$key])) {
+            $paddings[] = $block["item"][$key];
+        }
+    }
+    $css["item:padding"] = trim(implode(" ",$paddings));
+}
+
+$render = [
+    "item:link" => function (array $item, array $css, array $render, array $block) {
+        $url = $item["url"];
+        $label = $item["label"];
+        $name = $item["name"] ?? $url;
+        ob_start();
+        snippet("Themepack/Icons/SVG", [
+            "path" => $item["icon"]["path"],
+            "class" => $css["icon"],
+            "stroke:width" => "1",
+            "use:gradient" => false,
+        ]);
+        $icon = ob_get_contents();
+        $itemcss = $css["item:padding"];
+        ob_end_clean();
+        return <<<HTML
+        <div class="width:24 height:24 {$itemcss}" data-cancun-name="{$name}">
+            <a href="{$url}" class="--cc-nav-link-wrapper-outer">
+                <div class="--cc-nav-link-inner display:flex align-items:center width:24">
+                    {$icon}
+                    <span class="--cc-nav-label text:5">{$label}</span>
+                </div>
+            </a>
+        </div>
+        HTML;
+    },
+    "item:collapsible" => function (array $item, array $css, array $render, array $block, array $configuration) {
+        $id    = 'cc' . uniqid();
+        $label = $item["label"];
+        $name  = $item["name"] ?? $label;
+        ob_start();
+        snippet("Themepack/Icons/SVG", [
+            "path" => $item["icon"]["path"],
+            "class" => $css["icon"],
+            "stroke:width" => "1",
+            "use:gradient" => false,
+        ]);
+        $icon = ob_get_contents();
+        ob_end_clean();
+        ob_start();
+        snippet("Themepack/Icons/SVG", [
+            "path" => '/Paths/chevron-right.svg',
+            "class" => 'concrete-width-extra-small:13 concrete-height-extra-small:13 svg-fill:grayscale-16',
+            "stroke:width" => "1",
+            "use:gradient" => false,
+        ]);
+        $arrowRightIcon = ob_get_contents();
+        ob_end_clean();
+        ob_start();
+        snippet("Themepack/Icons/SVG", [
+            "path" => '/Paths/chevron-down.svg',
+            "class" => 'concrete-width-extra-small:13 concrete-height-extra-small:13 svg-fill:grayscale-16',
+            "stroke:width" => "1",
+            "use:gradient" => false,
+        ]);
+        $arrowDownIcon = ob_get_contents();
+        ob_end_clean();
+        $renderContent = function ($collapsibleContent) use ($render, $block, $configuration, $css) {
+            $itemcss = $css["item:padding"];
+            $url = $collapsibleContent['url'];
+            $name = $collapsibleContent['name'] ?? $url;
+            $label = $collapsibleContent['label'];
+            $cssicon = $css["icon"];
+            return <<<HTML
+            <div class="width:24 height:24 {$itemcss}" data-cancun-name="{$name}">
+                <a href="{$url}" class="--cc-nav-link-wrapper-outer display:flex align-items:center">
+                    <div class="{$cssicon}"></div>
+                    <div class="height:24">
+                        <span class="--cc-nav-label text:5"> {$label} </span>
+                    </div>
+                </a>
+            </div>
+            HTML;
+        };
+        $collapsibleContentHtml = '';
+        foreach ($item["content"] as $collapsibleContent) {
+            if (isset($collapsibleContent['url']) && isset($collapsibleContent['label'])) {
+                $collapsibleContentHtml .= $renderContent($collapsibleContent);
+            }
+        }
+        $clickAttribute = "plunc-click=\"{$configuration['namespace']}.toggleCollapse('{$id}')\"";
+        $itemcss = $css["item:padding"];
+        return <<<HTML
+        <div data-cancun-id="{$id}" data-cancun-name="{$name}" class="width:24 {$itemcss}">
+            <div {$clickAttribute} class="--cc-nav-collapsible-heading width:24 cursor:pointer display:flex justify-content:space-between align-items:center">
+                <div class="display:flex align-items:center">
+                    {$icon}
+                    <span class="--cc-nav-label --cc-nav-label-type-collapsible text:5">{$label}</span>
+                </div>
+                <div class="--cc-collapsible-arrow-right"> {$arrowRightIcon} </div>
+                <div class="--cc-collapsible-arrow-down" style="display:none;"> {$arrowDownIcon} </div>
+            </div>
+            <div class="--cc-nav-collapsible-content width:24" style="max-height: 0; overflow:hidden; transition: max-height 0.4s ease;">
+                {$collapsibleContentHtml}
+            </div>
+        </div>
+        HTML;
+    }
+];
 ?>
 
-<ul style="width:<?php echo $width; ?>" plunc-block="<?php echo $namespace; ?>" class="height:24">
-<?php
-    foreach ($block["content"] as $navItemGroup) {
-        echo '<li class="--cc-nav-item-group">';
-            if (isset($navItemGroup['heading'])) {
-                echo '<div class="--cc-nav-item-group-heading">';
-                echo htmlspecialchars($navItem['heading']);
-                echo '</div>';
-            }
-            foreach ($navItemGroup["blocks"] as $navItem) {
-                if ($navItem['type'] === 'link') {
-                    $navItemName = $navItem['name'] ?? '';
-                    echo '<a href="' . htmlspecialchars($navItem['url']) . '" class="--cc-nav-link-wrapper-outer '.$itemPaddingCss.'" data-cancun-name="'.$navItemName.'">';
-                        echo '<div class="--cc-nav-link-inner display:flex align-items:center width:24">';
-                            $navItem["icon"]["width"] ??= "concrete-width-extra-small:15";
-                            $navItem["icon"]["height"] ??= "concrete-height-extra-small:15";
-                            $navItem["icon"]["stroke:color"] ??= "svg-stroke:primary-strong";
-                            $navItem["icon"]["fill:color"] ??= "svg-fill:none";
-                            $navItem["icon"]["classlist"] ??= [];
-                            $__icon_classlist = array_merge(
-                                $navItem["icon"]["classlist"],
-                                [
-                                    $navItem["icon"]["width"],
-                                    $navItem["icon"]["stroke:color"],
-                                    $navItem["icon"]["fill:color"],
-                                    "margin-right:5",
-                                    "margin-left:5"
-                                ]
-                            );
-                            snippet("Themepack/Icons/SVG", [
-                                "path" => $navItem["icon"]["path"],
-                                "class" => implode(" ", $__icon_classlist),
-                                "stroke:width" => $navItem["icon"]["stroke:width"] ?? "1",
-                                "use:gradient" => $navItem["icon"]["use:gradient"] ?? false,
-                            ]);
-                            echo '<span class="--cc-nav-label text:5">';
-                            echo htmlspecialchars($navItem['label']);
-                            echo '</span>';
-                        echo '</div>';
-                    echo '</a>';
-                } elseif ($navItem['type'] === 'collapsible') {
-                    $itemId = 'cc' . uniqid();
-                    $navItemName = $navItem['name'] ?? '';
-                    echo '<div data-cancun-id="'.$itemId.'" data-cancun-name="'.$navItemName.'" class="width:24">';
-                        echo '<div plunc-click="'.$namespace.'.toggleCollapse(\''.$itemId.'\')'.'" class="--cc-nav-collapsible-heading width:24 cursor:pointer display:flex justify-content:space-between align-items:center  '.$itemPaddingCss.'">';
-                            echo '<div class="display:flex align-items:center">';
-                                $navItem["icon"]["width"] ??= "concrete-width-extra-small:15";
-                                $navItem["icon"]["height"] ??= "concrete-height-extra-small:15";
-                                $navItem["icon"]["stroke:color"] ??= "svg-stroke:primary-strong";
-                                $navItem["icon"]["fill:color"] ??= "svg-fill:none";
-                                $navItem["icon"]["classlist"] ??= [];
-                                $__icon_classlist = array_merge(
-                                    $navItem["icon"]["classlist"],
-                                    [
-                                        $navItem["icon"]["width"],
-                                        $navItem["icon"]["stroke:color"],
-                                        $navItem["icon"]["fill:color"],
-                                        "margin-right:5",
-                                        "margin-left:5"
-                                    ]
-                                );
-                                snippet("Themepack/Icons/SVG", [
-                                    "path" => $navItem["icon"]["path"],
-                                    "class" => implode(" ", $__icon_classlist),
-                                    "stroke:width" => $navItem["icon"]["stroke:width"] ?? "1",
-                                    "use:gradient" => $navItem["icon"]["use:gradient"] ?? false,
-                                ]);
-                                echo '<span class="--cc-nav-label --cc-nav-label-type-collapsible text:5">';
-                                echo htmlspecialchars($navItem['label']);
-                                echo '</span>';
-                            echo '</div>';
-                            echo '<div class="--cc-collapsible-arrow-right">';
-                                snippet("Themepack/Icons/SVG", [
-                                    "path" => '/Paths/chevron-right.svg',
-                                    "class" => 'concrete-width-extra-small:13 concrete-height-extra-small:13 svg-fill:grayscale-16',
-                                    "stroke:width" => "1.0",
-                                    "use:gradient" => false,
-                                ]);
-                            echo '</div>';
-                            echo '<div class="--cc-collapsible-arrow-down" style="display:none;">';
-                                snippet("Themepack/Icons/SVG", [
-                                    "path" => '/Paths/chevron-down.svg',
-                                    "class" => 'concrete-width-extra-small:13 concrete-height-extra-small:13 svg-fill:grayscale-16',
-                                    "stroke:width" => "1.0",
-                                    "use:gradient" => false,
-                                ]);
-                            echo '</div>';
-                        echo '</div>';
-                        echo '<div class="--cc-nav-collapsible-content width:24" style="max-height: 0; overflow:hidden; transition: max-height 0.4s ease;">';
-                            foreach($navItem["content"] as $content) {
-                                $contentName = $content['name'] ?? '';
-                                echo '<a href="' . htmlspecialchars($content['url']) . '" class="--cc-nav-link-wrapper-outer display:flex align-items:center" data-cancun-name="'.$contentName.'">';
-                                    echo '<div class="concrete-width-extra-small:15 concrete-height-extra-small:17 margin-right:5"></div>';
-                                    echo '<div class="height:24">';
-                                        echo '<span class="--cc-nav-label text:5">';
-                                        echo htmlspecialchars($content['label']);
-                                        echo '</span>';
-                                    echo '</div>';
-                                echo '</a>';
-                            }
-                        echo '</div>';
-                    echo '</div>';
-
-                } elseif ($navItem['type'] === 'icon') {
-                    echo '<i class="' . htmlspecialchars($navItem['icon']) . '"></i>';
-                } else {
-                    // Handle other types or unknown types
-                    echo '<span class="--cc-nav-unknown">';
-                    echo 'Unknown item type';
-                    echo '</span>';
-                }
-            }
-        echo '</li>';
-    }
-?> 
-    <style>
-        {{ <?php echo $namespace; ?>.presetCss }}
-        .cancun-color-primary-weak {
-            color: var(--default-color-primary-weak);
-        }
-    </style>
-</ul>
+<section plunc-block="<?php echo $configuration["namespace"]; ?>" class="width:24 height:24">
+    <div class="height:12 width:24">
+        <ul class="width:24 height:24">
+            <?php $contents = []; if (isset($block["top"]) && is_array($block["top"]["content"])) { $contents = $block["top"]["content"]; } ?>
+            <?php foreach ($contents as $content): ?>
+                <li class="--cc-nav-item-group width:24">
+                    <!-- content heading -->
+                    <?php if (isset($content["heading"])): ?>
+                        <div class="--cc-nav-item-group-heading">
+                            <?php echo htmlspecialchars($content["heading"]); ?>
+                        </div>
+                    <?php endif; ?>
+                    <!-- content blocks -->
+                    <?php foreach ($content["blocks"] as $item): ?>
+                        <?php if ($item["type"] === "link"): ?>
+                            <?php echo $render["item:link"]($item, $css, $render, $block); ?>
+                        <?php elseif ($item["type"] === "collapsible"): ?>
+                            <?php echo $render["item:collapsible"]($item, $css, $render, $block, $configuration); ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </li>
+            <?php endforeach; ?>    
+        </ul>
+    </div>
+    <div class="height:12 width:24">
+        <ul class="width:24 height:24 display:flex flex-direction:column-reverse">
+            <?php $contents = []; if (isset($block["bottom"]) && is_array($block["bottom"]["content"])) { $contents = $block["bottom"]["content"]; } ?>
+            <?php foreach ($contents as $content): ?>
+                <li class="--cc-nav-item-group width:24">
+                    <!-- content heading -->
+                    <?php if (isset($content["heading"])): ?>
+                        <div class="--cc-nav-item-group-heading">
+                            <?php echo htmlspecialchars($content["heading"]); ?>
+                        </div>
+                    <?php endif; ?>
+                    <!-- content blocks -->
+                    <?php foreach ($content["blocks"] as $item): ?>
+                        <?php if ($item["type"] === "link"): ?>
+                            <?php echo $render["item:link"]($item, $css, $render, $block); ?>
+                        <?php elseif ($item["type"] === "collapsible"): ?>
+                            <?php echo $render["item:collapsible"]($item, $css, $render, $block, $configuration); ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </li>
+            <?php endforeach; ?>  
+        </ul>
+    </div>
+    <style></style>
+</section>
