@@ -9,6 +9,17 @@ $configuration = [
 ?>
 
 <section class="width:24" plunc-block="<?php echo $configuration["namespace"]; ?>">
+    <!-- table toolbar -->
+    <div class="width:24 display:flex align-items:center padding-x:7 padding-y:4">
+        <div class="width:12">
+            <!-- table search bar -->
+            <?php include __DIR__ . "/defaults/search.bar.php"; ?>
+        </div>
+        <div class="width:12">
+            
+        </div>
+    </div>
+    <?php snippet("Themepack/Dividers/Horizontal/Border"); ?>
     <!-- table header -->
     <div class="width:24">
         <?php include $block['section:header']; ?>
