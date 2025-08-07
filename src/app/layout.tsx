@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { StoreProvider } from "@/state/StoreProvider";
+import AuthProvider from "@/context/AuthProvider";
 
 
 
@@ -15,12 +17,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`dark:bg-black antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <StoreProvider>
+        <html lang="en">
+          <body
+            className={`antialiased`}
+          >
+            <AuthProvider>
+              {children}
+            </AuthProvider>
+          </body>
+        </html>
+    </StoreProvider>
   );
 }

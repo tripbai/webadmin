@@ -1,15 +1,22 @@
 'use client';
 
 import { useState } from 'react';
-import MessageBox from '../MessageBox';
 import { httpGet, httpPost } from '@/services/httpClient';
 import { IdentityAuthority } from '@/types/identity-authority/module/module';
+import Alert from '../Alert';
+import Loader from '../Loader';
+import { useDispatch } from 'react-redux';
+import { createUserSession } from '@/state/user/userSlice';
+import { usePathname, useRouter } from "next/navigation";
+import { setUserSession } from '@/services/userSession';
 
 export default function Login() {
-    const [showMessage, setShowMessage] = useState(false)
-    const [message, setMessage] = useState('')
+    const [showErrorMessage, setShowErrorMessage] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const dispatch = useDispatch()
+    const router = useRouter()
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         console.log({email, password})
@@ -28,9 +35,22 @@ export default function Login() {
             if (!response.is_user_registered) {
                 throw new Error('Sorry, invalid email or password')
             }
+            if (response.access_type !== 'allowed') {
+                throw new Error('You are not allowed to access this application.')
+            }
+            dispatch(createUserSession({
+                isSignedIn: true,
+                userId: response.user_id,
+                authToken: response.token
+            }))
+            setUserSession({
+                userId: response.user_id,
+                authToken: response.token
+            })
+            router.push('/')
         } catch (error) {
-            setShowMessage(true)
-            setMessage(error.message)
+            setShowErrorMessage(true)
+            setErrorMessage('Your email or password is incorrect.')
         }
     }
     return (
@@ -82,7 +102,7 @@ export default function Login() {
                     Sign in
                 </button>
             </form>
-            {showMessage && <MessageBox message={message} />}
+            {showErrorMessage && <Alert type="error" message={errorMessage} />}
         </div>
     )
 }

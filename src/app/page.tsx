@@ -7,6 +7,7 @@ export default function Home() {
         <div>
             <h1>Welcome home!</h1>
             <Link href="/admin/users">Go to Users Page</Link>
+            <Link href="/login">Go to Login</Link>
         </div>
     )
 }
