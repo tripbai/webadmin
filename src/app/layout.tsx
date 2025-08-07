@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { StoreProvider } from "@/state/StoreProvider";
 import AuthProvider from "@/context/AuthProvider";
+import TaskProvider from "@/providers/TaskProvider";
 
 
 
@@ -18,6 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <StoreProvider>
+      <TaskProvider>
         <html lang="en">
           <body
             className={`antialiased`}
@@ -27,6 +29,7 @@ export default function RootLayout({
             </AuthProvider>
           </body>
         </html>
+      </TaskProvider>
     </StoreProvider>
   );
 }

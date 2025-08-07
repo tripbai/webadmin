@@ -18,15 +18,21 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     const pathname = usePathname()
     const hasRefreshedTokenRef = useRef(false)
     useEffect(() => {
+
+        let isMounted = true
+
         if (typeof window === 'undefined') return
 
         // checks if the user is authenticated and redirects accordingly
         const gatekeep = (isAuthenticated: boolean) => {
+            if (!isMounted) return
             if (!isAuthenticated && pathname !== '/login') {
                 router.push('/login')
+                setHasValidSession(false)
                 setLoading(false)
                 return
             } else if (!isAuthenticated && pathname === '/login') {
+                setHasValidSession(false)
                 setLoading(false)
                 return
             } else if (isAuthenticated && pathname === '/login') {
@@ -53,6 +59,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
                 params: {},
                 authToken: sessionData.authToken
             }).then((response) => {
+                if (!isMounted) return
                 // update token 
                 dispatch(refreshAuthToken({
                     isSignedIn: true,
@@ -65,12 +72,18 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
                 })
                 return gatekeep(true)
             }).catch((error) => {
+                console.log(error)
+                if (!isMounted) return
                 destroySession()
                 dispatch(clearUserSession())
                 return gatekeep(false)
             })
+        } else {
+            gatekeep(true)
         }
-        return gatekeep(true)
+        return () => {
+            isMounted = false // 🧼 cleanup
+        }
     }, [pathname])
 
     // for any page, we show a loader while checking the session
