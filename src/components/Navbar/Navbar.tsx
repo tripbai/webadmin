@@ -3,7 +3,7 @@
 import { useUserSnippet } from "@/hooks/identity-authority/useUserSnippet";
 
 export default function Navbar() {
-    const { data, loading, error } = useUserSnippet('some-user-id');
+    const { data, error, isLoading, isError } = useUserSnippet('some-user-id');
     console.log(data)
     return (
         <nav className="border-b dark:border-gray-700 w-full md:static md:text-sm">

@@ -3,8 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { StoreProvider } from "@/state/StoreProvider";
 import AuthProvider from "@/context/AuthProvider";
-import TaskProvider from "@/providers/TaskProvider";
-
+import TanStackQueryProvider from "@/query/TanStackQueryProvider";
 
 
 export const metadata: Metadata = {
@@ -19,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <StoreProvider>
-      <TaskProvider>
+      <TanStackQueryProvider>
         <html lang="en">
           <body
             className={`antialiased`}
@@ -29,7 +28,7 @@ export default function RootLayout({
             </AuthProvider>
           </body>
         </html>
-      </TaskProvider>
+      </TanStackQueryProvider>
     </StoreProvider>
   );
 }

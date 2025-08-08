@@ -2,7 +2,7 @@ import { useUserSnippet } from "@/hooks/identity-authority/useUserSnippet";
 import Link from "next/link"
 
 export default function Sidebar() {
-    const { data, loading, error } = useUserSnippet('some-user-id');
+    const { data, error, isLoading, isError } = useUserSnippet('some-user-id');
     console.log(data)
     const navTopItems = [
         {
