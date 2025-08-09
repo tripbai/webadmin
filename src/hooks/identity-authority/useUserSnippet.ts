@@ -5,7 +5,6 @@ import { KryptoDoc } from "@/types/kryptodoc/types";
 import { UseQueryResult, useQuery } from "@tanstack/react-query";
 
 export function useUserSnippet(userId: string): UseQueryResult<KryptoDoc.SnippetOf<UserSnippetResult>> {
-    console.log(userId)
     return useQuery<KryptoDoc.SnippetOf<UserSnippetResult>>({
         queryKey: ['user-snippet', userId],
         queryFn: async () => {
