@@ -82,7 +82,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
             gatekeep(true)
         }
         return () => {
-            isMounted = false // 🧼 cleanup
+            isMounted = false
         }
     }, [pathname])
 

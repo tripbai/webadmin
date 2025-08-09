@@ -1,8 +1,14 @@
 import { useUserSnippet } from "@/hooks/identity-authority/useUserSnippet";
+import { RootState } from "@/state/store";
 import Link from "next/link"
+import { useSelector } from "react-redux";
 
 export default function Sidebar() {
-    const { data, error, isLoading, isError } = useUserSnippet('some-user-id');
+    const userState = useSelector((state: RootState) => state.user.value)
+    if (!userState.isSignedIn) {
+        return <></>    
+    }
+    const { data, error, isLoading, isError } = useUserSnippet(userState.userId)
     console.log(data)
     const navTopItems = [
         {

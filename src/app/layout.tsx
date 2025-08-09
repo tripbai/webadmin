@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { StoreProvider } from "@/state/StoreProvider";
-import AuthProvider from "@/context/AuthProvider";
-import TanStackQueryProvider from "@/query/TanStackQueryProvider";
+import { StoreProvider } from "@/providers/StoreProvider";
+import AuthProvider from "@/providers/AuthProvider";
+import TanStackQueryProvider from "@/providers/TanStackQueryProvider";
 
 
 export const metadata: Metadata = {

@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { createUserSession } from '@/state/user/userSlice';
 import { usePathname, useRouter } from "next/navigation";
 import { setUserSession } from '@/services/userSession';
+import config from '@/config';
 
 export default function Login() {
     const [showErrorMessage, setShowErrorMessage] = useState(false)
@@ -22,7 +23,7 @@ export default function Login() {
         console.log({email, password})
         try {
             const response = await httpPost<IdentityAuthority.Users.Endpoints.AccessReport>({
-                host: 'http://localhost:5458',
+                host: config.iauth.host,
                 path: '/identity-authority/access-report',
                 params: {},
                 data: {
