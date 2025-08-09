@@ -85,8 +85,8 @@ export default function Sidebar() {
                                 navTopItems.map((item, idx) => (
                                     <li key={idx}>
                                         <Link href={item.href} className="flex items-center gap-x-2 text-gray-600 p-2 rounded-lg  hover:bg-gray-50 active:bg-gray-100 duration-150">
-                                            <div className="text-gray-500">{item.icon}</div>
-                                            {item.name}
+                                            <div className="text-gray-500 dark:text-gray-300">{item.icon}</div>
+                                            <span className="text-gray-500 dark:text-gray-400">{item.name}</span>
                                         </Link>
                                     </li>
                                 ))
@@ -98,8 +98,8 @@ export default function Sidebar() {
                                     navBottomItems.map((item, idx) => (
                                         <li key={idx}>
                                             <Link href={item.href} className="flex items-center gap-x-2 text-gray-600 p-2 rounded-lg  hover:bg-gray-50 active:bg-gray-100 duration-150">
-                                                <div className="text-gray-500">{item.icon}</div>
-                                                {item.name}
+                                                <div className="text-gray-500 dark:text-gray-300">{item.icon}</div>
+                                                <span className="text-gray-500 dark:text-gray-400">{item.name}</span>
                                             </Link>
                                         </li>
                                     ))

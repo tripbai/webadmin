@@ -29,23 +29,14 @@ const test = async () => {
         },
         authToken: null
     })
-    
+    response // This should be an error, as 'invalidKey' is not defined in the query
 }
 
 type UserSnippetResponseType = {
     first_name: null, 
     last_name: null,
     email_address: null,
-    reviews: {
-        kind: '#list',
-        collection: 'reviews',
-        has_entity_id: {
-            entity_id: string
-            exists: boolean
-        }
-        count: number,
-        snippets: {
-            
-        }
-    }
+    reviews: KryptoDoc.ListOf<[{
+        content: null
+    }]>
 }
