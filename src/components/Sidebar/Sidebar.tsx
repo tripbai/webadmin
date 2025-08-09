@@ -8,14 +8,21 @@ export default function Sidebar() {
     if (!userState.isSignedIn) {
         return <></>    
     }
-    const { data, error, isLoading, isError } = useUserSnippet(userState.userId)
-    console.log(data)
     const navTopItems = [
         {
             href: '/',
             name: 'Dashboard',
             icon: <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 6.878V6a2.25 2.25 0 012.25-2.25h7.5A2.25 2.25 0 0118 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 004.5 9v.878m13.5-3A2.25 2.25 0 0119.5 9v.878m0 0a2.246 2.246 0 00-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0121 12v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6c0-.98.626-1.813 1.5-2.122" />
+            </svg>
+            ,
+        },
+        {
+            href: '/admin/users',
+            name: 'Users',
+            icon: <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                <path d="M9 4A4 4 0 1 0 9 12 4 4 0 1 0 9 4z"></path><path d="m10,13h-2c-2.76,0-5,2.24-5,5v1c0,.55.45,1,1,1h10c.55,0,1-.45,1-1v-1c0-2.76-2.24-5-5-5Z"></path><path d="m15,4c-.47,0-.9.09-1.31.22.82,1.02,1.31,2.33,1.31,3.78s-.49,2.75-1.31,3.78c.41.13.84.22,1.31.22,2.28,0,4-1.72,4-4s-1.72-4-4-4Z"></path>
+                <path d="m16,13h-1.11c1.3,1.27,2.11,3.04,2.11,5v1c0,.35-.07.69-.18,1h3.18c.55,0,1-.45,1-1v-1c0-2.76-2.24-5-5-5Z"></path>
             </svg>
             ,
         },
