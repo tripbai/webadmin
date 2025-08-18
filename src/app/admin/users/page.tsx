@@ -1,5 +1,7 @@
 "use client";
 
+import Avatar from "@/components/Avatar/Avatar";
+import NameInitialsAvatar from "@/components/Avatar/NameInitialsAvatar";
 import Navbar from "@/components/Navbar";
 import SimpleHeading from "@/components/Page/Headings/SimpleHeading";
 import Sidebar from "@/components/Sidebar";
@@ -40,10 +42,24 @@ export default function Users() {
   const createRows = () => {
     return users.map((user) => ({
       cells: [
-        user.first_name + " " + user.last_name,
-        user.username,
+        <>
+          <Avatar
+            src={user.profile_photo}
+            alt={`${user.first_name} ${user.last_name}`}
+            fallback={<NameInitialsAvatar firstName={user.first_name} />}
+          />
+        </>,
+        <div>
+          <div>
+            <div className="font-bold">
+              {user.first_name + " " + user.last_name}
+            </div>{" "}
+            <div className="text-gray-600">@{user.username}</div>
+          </div>
+        </div>,
         user.email_address,
-        user.status,
+        <code className="text-gray-500">{user.id}</code>,
+        <span className={`--tag-status-is-${user.status}`}>{user.status}</span>,
       ],
       buttons: [
         {
@@ -89,7 +105,7 @@ export default function Users() {
             searchClose={closeSearch}
             searchPlaceholder="Search User ID..."
             emptyMessage="No users found."
-            headings={[<>Name</>, <>Username</>, <>Email</>, <>Status</>]}
+            headings={[<></>, <>User</>, <>Email</>, <>User ID</>, <>Status</>]}
             rows={createRows()}
           />
         </main>

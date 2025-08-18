@@ -37,17 +37,16 @@ body {
 
 @keyframes slatePageSpinner {
   0% {
-      transform: scale(0);
-      opacity: 1;
+    transform: scale(0);
+    opacity: 1;
   }
   100% {
-      transform: scale(1);
-      opacity: 0;
+    transform: scale(1);
+    opacity: 0;
   }
 }
 
 @layer components {
-  
   @keyframes skeleton-loading-dark {
     0% {
       background-color: hsl(0, 0%, 23%);
@@ -80,5 +79,21 @@ body {
     height: 0.75rem;
     margin-bottom: 0.5rem;
     border-radius: 0.25rem;
+  }
+
+  .--tag-status-is-active {
+    background-color: aquamarine;
+    color: black;
+    padding: 0.15rem 0.3rem;
+    border-radius: 0.5rem;
+    font-size: 0.775rem;
+  }
+
+  .--tag-status-is-unverified {
+    background-color: rgb(255, 223, 127);
+    color: black;
+    padding: 0.15rem 0.3rem;
+    border-radius: 0.5rem;
+    font-size: 0.775rem;
   }
 }
