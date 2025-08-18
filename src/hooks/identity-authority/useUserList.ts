@@ -2,37 +2,80 @@ import config from "@/config";
 import { httpPost } from "@/services/httpClient";
 import * as IdentityAuthority from "@/types/identity-authority/module/types";
 import { KryptoDoc } from "@/types/kryptodoc/types";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import usePaginatedList from "../paginated-list/usePaginatedList";
 
-type Params = {
-  sinceUserId: string | null;
-  getPrevious: boolean;
-  getNext: boolean;
-};
-
-export default function useUserList(initialConfig?: Partial<Params>) {
-  const [users, setUsers] = useState<UserSnippet[]>([]);
-  const [params, setParams] = useState<Params>({
-    sinceUserId: null,
-    getPrevious: false,
-    getNext: true,
-    ...initialConfig,
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  async function fetchUsers() {
-    setIsLoading(true);
-    try {
+export default function useUserList() {
+  const {
+    list,
+    isLoading,
+    isError,
+    hasNextPage,
+    hasPreviousPage,
+    triggerNextPageFetch,
+    triggerPreviousPageFetch,
+    startSearchResultContext,
+    closeSearchResultContext,
+  } = usePaginatedList<UserSnippet>({
+    expectedResultsPerPage: 5,
+    dataFetcher: async (params) => {
+      if (params.context === "regular") {
+        const { page, previousResult } = params;
+        let sinceDocumentId: string | null = null;
+        if (page > 1) {
+          sinceDocumentId = previousResult[previousResult.length - 1].id;
+        }
+        const response = await httpPost<
+          KryptoDoc.Endpoints.Query<"list", UserSnippet>
+        >({
+          host: config.kryptodoc.host,
+          path: "/query",
+          params: {},
+          data: {
+            query: {
+              kind: "#list",
+              namespace: config.kryptodoc.namespace,
+              collection: "users",
+              // @ts-expect-error
+              since_document_id: sinceDocumentId,
+              fields: {
+                id: null,
+                first_name: null,
+                last_name: null,
+                username: null,
+                email_address: null,
+                is_email_verified: null,
+                user_type: null,
+                status: null,
+                profile_photo: null,
+                cover_photo: null,
+              },
+            },
+          },
+          authToken: null,
+        });
+        const userSnippets = response.snippets.map(
+          (snippet) => snippet.snippet
+        );
+        return userSnippets;
+      }
+      const { query, page, previousResult } = params;
+      let sinceDocumentId: string | null = null;
+      if (page > 1) {
+        sinceDocumentId = previousResult[previousResult.length - 1].id;
+      }
       const response = await httpPost<
-        KryptoDoc.Endpoints.Query<"list", UserSnippet[]>
+        KryptoDoc.Endpoints.Query<"snippet", UserSnippet>
       >({
         host: config.kryptodoc.host,
         path: "/query",
         params: {},
         data: {
           query: {
-            kind: "#list",
+            kind: "#snippet",
             namespace: config.kryptodoc.namespace,
             collection: "users",
+            entity_id: query,
             fields: {
               id: null,
               first_name: null,
@@ -49,21 +92,22 @@ export default function useUserList(initialConfig?: Partial<Params>) {
         },
         authToken: null,
       });
-      setUsers((prev) => [...prev, ...response.snippets]);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    fetchUsers();
-  }, [params]);
+      if (response.snippet.id === null) {
+        return [];
+      }
+      return [response.snippet];
+    },
+  });
 
   return {
-    users,
+    users: list,
     isLoading,
-    setParams,
-    refresh: fetchUsers,
+    getNextPage: triggerNextPageFetch,
+    hasNextPage: hasNextPage,
+    getPreviousPage: triggerPreviousPageFetch,
+    hasPreviousPage: hasPreviousPage,
+    searchUser: startSearchResultContext,
+    closeSearch: closeSearchResultContext,
   };
 }
 

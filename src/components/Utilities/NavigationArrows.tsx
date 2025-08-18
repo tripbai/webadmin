@@ -1,9 +1,11 @@
 type Props = {
   leftArrow: {
     isActive: boolean;
+    onClick: () => void;
   };
   rightArrow: {
     isActive: boolean;
+    onClick: () => void;
   };
 };
 
@@ -33,10 +35,18 @@ export default function NavigationArrows({ leftArrow, rightArrow }: Props) {
   );
   return (
     <div className="flex items-center justify-between">
-      <button className="" disabled={!leftArrow.isActive}>
+      <button
+        className=""
+        disabled={!leftArrow.isActive}
+        onClick={leftArrow.onClick}
+      >
         {leftArrowIcon}
       </button>
-      <button className="" disabled={!rightArrow.isActive}>
+      <button
+        className=""
+        disabled={!rightArrow.isActive}
+        onClick={rightArrow.onClick}
+      >
         {rightArrowIcon}
       </button>
     </div>
