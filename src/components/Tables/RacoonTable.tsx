@@ -84,7 +84,7 @@ export default function RacoonTable({
       );
     }
     return rows.map((row, index) => (
-      <tr key={index}>
+      <tr key={index} className="">
         {row.cells.map((cell, cellIndex) => (
           <td
             key={cellIndex}
@@ -94,7 +94,7 @@ export default function RacoonTable({
           </td>
         ))}
         {hasButtons && row.buttons && (
-          <td className="px-6 py-3 whitespace-nowrap">
+          <td className="px-6 py-3 whitespace-nowrap dark:text-gray-200">
             {row.buttons.map((button, buttonIndex) => (
               <button
                 key={buttonIndex}
@@ -111,7 +111,7 @@ export default function RacoonTable({
     ));
   };
   return (
-    <div className="mt-12 shadow-sm border dark:border-gray-700 rounded-lg overflow-x-auto">
+    <div className="mt-6 shadow-sm border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden">
       <section className="w-full flex">
         <div className="py-3 px-4 w-1/2">
           <form
@@ -151,7 +151,7 @@ export default function RacoonTable({
                 type="text"
                 ref={inputRef}
                 placeholder={searchPlaceholder}
-                className="w-full px-2 text-gray-500 bg-transparent rounded-md outline-none"
+                className="w-full px-2 text-gray-500 bg-transparent text-sm rounded-md outline-none"
               />
             </div>
           </form>
@@ -171,19 +171,23 @@ export default function RacoonTable({
           </div>
         </div>
       </section>
-      <table className="w-full table-auto text-sm text-left">
-        <thead className="bg-gray-50 dark:bg-gray-900 text-gray-600 dark:text-gray-200 font-medium border-b dark:border-gray-700">
-          <tr>
-            {headings.map((heading, index) => (
-              <th key={index} className="py-1 px-6">
-                {heading}
-              </th>
-            ))}
-            {hasButtons && <th className="py-1 px-6">Actions</th>}
-          </tr>
-        </thead>
-        <tbody className="text-gray-600 divide-y">{renderRows()}</tbody>
-      </table>
+      <section className="w-[1000px] overflow-x-auto">
+        <table className="w-full table-auto text-sm text-left">
+          <thead className="w-full bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-200 font-medium border-b dark:border-gray-700">
+            <tr>
+              {headings.map((heading, index) => (
+                <th key={index} className="py-1 px-6">
+                  {heading}
+                </th>
+              ))}
+              {hasButtons && <th className="py-1 px-6">Actions</th>}
+            </tr>
+          </thead>
+          <tbody className="text-gray-600 divide-y divide-gray-300">
+            {renderRows()}
+          </tbody>
+        </table>
+      </section>
     </div>
   );
 }

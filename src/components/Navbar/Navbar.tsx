@@ -46,7 +46,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="border-b dark:border-gray-700 w-full md:static md:text-sm">
+    <nav className="bg-gray-100 dark:bg-gray-900 dark:border-gray-700 border-gray-300 w-full md:static md:text-sm">
       <div className="items-center px-4 mx-auto md:flex md:px-8">
         <div className="flex items-center justify-between py-3 md:py-5 md:block">
           <a href="javascript:void(0)">tripbai</a>

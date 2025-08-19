@@ -179,7 +179,7 @@ export default function Sidebar() {
 
   return (
     <>
-      <nav className="w-full h-full border-r dark:border-gray-700 space-y-8 sm:w-80">
+      <nav className="w-full h-full border-r border-gray-300 dark:border-gray-700 space-y-8 sm:w-50 flex-shrink-0">
         <div className="flex flex-col h-full">
           <div className="h-5 flex items-center px-8"></div>
           <div className="flex-1 flex flex-col h-full overflow-auto">

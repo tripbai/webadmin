@@ -15,10 +15,12 @@ export default function SimpleHeading({ title, subtitle, buttons }: Props) {
   return (
     <div className="justify-between md:flex">
       <div className="max-w-lg">
-        <h3 className="text-gray-800 dark:text-gray-200 text-xl font-bold sm:text-2xl">
+        <h3 className="text-gray-800 dark:text-gray-200 text-lg font-bold sm:text-xl">
           {title}
         </h3>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">{subtitle}</p>
+        <p className="text-gray-600 dark:text-gray-400 mt-1 text-sm">
+          {subtitle}
+        </p>
       </div>
       <div className="mt-3 md:mt-0">
         {buttons.map((button, index) => (
