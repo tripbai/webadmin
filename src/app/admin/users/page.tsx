@@ -2,15 +2,16 @@
 
 import Avatar from "@/components/Avatar/Avatar";
 import NameInitialsAvatar from "@/components/Avatar/NameInitialsAvatar";
+import Dialog, { DialogRef } from "@/components/Dialog";
 import Navbar from "@/components/Navbar";
 import SimpleHeading from "@/components/Page/Headings/SimpleHeading";
 import Sidebar from "@/components/Sidebar";
 import RacoonTable from "@/components/Tables/RacoonTable";
+import CreateUserForm from "@/components/Users/CreateUserForm";
 import useUserList from "@/hooks/identity-authority/useUserList";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Users() {
-  //const [loading, setLoading] = useState(true);
   const {
     users,
     isLoading,
@@ -22,8 +23,10 @@ export default function Users() {
     closeSearch,
   } = useUserList();
   const [userList, setUserList] = useState<Array<{}>>([]);
+  const dialogRef = useRef<DialogRef>(null);
   const handleAddUserClick = () => {
-    alert("Add User Clicked");
+    console.log("Add User Clicked");
+    dialogRef.current?.open();
   };
   const handleManageUserClick = (row: { [key: string]: any }) => {
     console.log("Manage User Clicked", row);
@@ -110,6 +113,9 @@ export default function Users() {
           />
         </main>
       </div>
+      <Dialog ref={dialogRef}>
+        {({ close }) => <CreateUserForm onSuccess={close} />}
+      </Dialog>
     </section>
   );
 }

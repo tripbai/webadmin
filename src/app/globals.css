@@ -21,6 +21,39 @@
   }
 } */
 
+@keyframes button-load-anim {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.--spinning-btn {
+  position: relative;
+  color: transparent !important;
+}
+
+.--spinning-btn:after {
+  content: "";
+  display: block;
+  width: 1.1em;
+  height: 1.1em;
+  position: absolute;
+  left: calc(50% - 0.75em);
+  top: calc(50% - 0.72em);
+  border: 0.17em solid #e9e9e92b;
+  border-right-color: #ffffff;
+  border-radius: 50%;
+  animation: button-load-anim 0.5s linear infinite;
+  opacity: 1;
+}
+
+.--spinning-btn svg {
+  opacity: 0 !important;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -35,6 +68,18 @@ body {
   border-radius: 50%;
   box-sizing: border-box;
   animation: slatePageSpinner 1s ease-in infinite;
+}
+
+.dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  background: white;
 }
 
 @keyframes slatePageSpinner {
