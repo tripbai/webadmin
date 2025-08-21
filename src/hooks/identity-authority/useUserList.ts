@@ -4,6 +4,7 @@ import * as IdentityAuthority from "@/types/identity-authority/module/types";
 import { KryptoDoc } from "@/types/kryptodoc/types";
 import { useEffect, useRef, useState } from "react";
 import usePaginatedList from "../paginated-list/usePaginatedList";
+import { replayUserActions } from "@/services/identity-authority/userActionReels";
 
 export default function useUserList() {
   const {
@@ -57,7 +58,14 @@ export default function useUserList() {
         const userSnippets = response.snippets.map(
           (snippet) => snippet.snippet
         );
-        return userSnippets;
+        const replayedSnippets = await replayUserActions(
+          userSnippets,
+          page === 1
+        );
+        if (replayedSnippets.length > 5) {
+          return replayedSnippets.slice(0, 5);
+        }
+        return replayedSnippets;
       }
       const { query, page, previousResult } = params;
       let sinceDocumentId: string | null = null;

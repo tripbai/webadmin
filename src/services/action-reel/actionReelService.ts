@@ -16,9 +16,9 @@ type ActionItem = {
   type: ActionType;
 };
 
-type ReplayableDataInterface = {
+type ReplayableDataInterface<T> = {
   recordId: string;
-  data: any;
+  data: T;
 };
 
 const isDeepEqual = (a: unknown, b: unknown): boolean => {
@@ -95,12 +95,12 @@ export const recordAction = async (params: {
   storeStoredActions(storedActions);
 };
 
-export const replayAction = async (params: {
+export const replayAction = async <T>(params: {
   collection: string;
-  data: Array<ReplayableDataInterface>;
+  data: Array<ReplayableDataInterface<T>>;
   skips: Array<ActionType>;
 }) => {
-  let replayableDatas: Array<ReplayableDataInterface> = JSON.parse(
+  let replayableDatas: Array<ReplayableDataInterface<T>> = JSON.parse(
     JSON.stringify(params.data)
   );
   const storedActions = await getStoredActions();
