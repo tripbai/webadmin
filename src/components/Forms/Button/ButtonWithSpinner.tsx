@@ -1,15 +1,21 @@
 import { Dispatch, SetStateAction, useState } from "react";
 
 type Props = {
-  onClick: (setIsLoading: Dispatch<SetStateAction<boolean>>) => void;
+  onClick: () => Promise<void>;
   text: string;
   type: "primary" | "secondary" | "info" | "danger";
 };
 
 export default function ButtonWithSpinner({ onClick, text, type }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const clickButton = () => {
-    onClick(setIsLoading);
+  const clickButton = async () => {
+    try {
+      setIsLoading(true);
+      await onClick();
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <button
