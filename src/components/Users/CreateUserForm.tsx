@@ -11,33 +11,48 @@ import {
 } from "@/services/identity-authority/profile-assertions";
 import {
   assertIsEmailAddress,
+  assertIsRawPassword,
   assertIsUsername,
 } from "@/services/identity-authority/user-assertions";
 import {
+  createUser,
   doesUserEmailExists,
   doesUsernameExists,
 } from "@/services/identity-authority/userService";
 import Username from "../Forms/Inputs/Username";
 import Password from "../Forms/Inputs/Password";
 import SimpleButton from "../Forms/Button/SimpleButton";
+import * as IdentityAuthority from "@/types/identity-authority/module/types";
 
 type CreateUserFormProps = {
   onSuccess: () => void;
 };
 
 export default function CreateUserForm({ onSuccess }: CreateUserFormProps) {
-  const { values, errors, setValue, setError } = useForm({
-    email: "",
-    username: "",
-    firstName: "",
-    lastName: "",
-    password: "",
+  const { values, errors, setValue, setError } = useForm<{
+    email: IdentityAuthority.Users.Fields.EmailAddress;
+    username: IdentityAuthority.Users.Fields.Username;
+    firstName: IdentityAuthority.Profile.Fields.FirstName;
+    lastName: IdentityAuthority.Profile.Fields.LastName;
+    password: IdentityAuthority.Users.Fields.RawPassword;
+  }>({
+    email: "" as IdentityAuthority.Users.Fields.EmailAddress,
+    username: "" as IdentityAuthority.Users.Fields.Username,
+    firstName: "" as IdentityAuthority.Profile.Fields.FirstName,
+    lastName: "" as IdentityAuthority.Profile.Fields.LastName,
+    password: "" as IdentityAuthority.Users.Fields.RawPassword,
   });
   const [fullNameError, setFullNameError] = useState<string | null>(null);
 
   const clickSubmitButton = async () => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      await createUser({
+        firstName: values.firstName,
+        lastName: values.lastName,
+        emailAddress: values.email,
+        password: values.password,
+        username: values.username,
+      });
     } catch (error) {
       console.error("Error creating user:", error);
     }
@@ -128,6 +143,8 @@ export default function CreateUserForm({ onSuccess }: CreateUserFormProps) {
         <Password
           value={values.password}
           onChange={(password) => {
+            // assertIsRawPassword(password);
+            // @ts-expect-error
             setValue("password", password);
           }}
         />
