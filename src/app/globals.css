@@ -59,6 +59,15 @@ body {
     background: linear-gradient(90deg, #43b28f, #0298ac);
   }
 
+  .is-background-secondary {
+    background: linear-gradient(90deg, #dedede, #d3d3d3);
+    @apply text-black;
+  }
+
+  .is-background-secondary:hover {
+    background: linear-gradient(90deg, #e4e4e4, #c9c9c9);
+  }
+
   .is-input {
     @apply w-full py-2 text-gray-500 outline-none border shadow-sm rounded-lg;
   }
@@ -68,6 +77,6 @@ body {
   }
 
   .is-button {
-    @apply cursor-pointer inline-block px-4 py-2 text-white duration-150 font-medium rounded-lg md:text-sm;
+    @apply cursor-pointer inline-block px-4 py-2 duration-150 font-medium rounded-lg md:text-sm;
   }
 }
