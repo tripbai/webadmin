@@ -50,18 +50,17 @@ export default function CreateUserForm({
   const [formError, setFormError] = useState<string | null>(null);
 
   const clickSubmitButton = async () => {
-    await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulate network delay
-    // try {
-    //   await createUser({
-    //     firstName: values.firstName,
-    //     lastName: values.lastName,
-    //     emailAddress: values.email,
-    //     password: values.password,
-    //     username: values.username,
-    //   });
-    // } catch (error) {
-    //   console.error("Error creating user:", error);
-    // }
+    try {
+      await createUser({
+        firstName: values.firstName,
+        lastName: values.lastName,
+        emailAddress: values.email,
+        password: values.password,
+        username: values.username,
+      });
+    } catch (error) {
+      console.error("Error creating user:", error);
+    }
   };
   const closeForm = () => {
     if (formError !== null) {

@@ -1,5 +1,7 @@
 import { httpGet, httpPost } from "../httpClient";
 import * as IdentityAuthority from "../../types/identity-authority/module/types";
+import * as Core from "@/types/core/module/types";
+import { SignedInUser } from "@/state/store";
 import config from "@/config";
 import { storeCreateUserAction } from "./userActionReels";
 
@@ -77,5 +79,21 @@ export const createUser = async ({
     status: "unverified",
     profile_photo: null,
     cover_photo: null,
+  });
+};
+
+export const getUserById = async ({
+  userId,
+  signedInUser,
+}: {
+  userId: Core.Entity.Id;
+  signedInUser: SignedInUser["value"];
+}) => {
+  return await httpGet<IdentityAuthority.Users.Endpoints.GetModel>({
+    host: config.iauth.host,
+    path: "/identity-authority/users/:user_id",
+    params: { user_id: userId },
+    data: {},
+    authToken: signedInUser.authToken,
   });
 };

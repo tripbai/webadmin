@@ -11,6 +11,7 @@ import CreateUserForm from "@/components/Users/CreateUserForm";
 import useUserList from "@/hooks/identity-authority/useUserList";
 import { useEffect, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import * as IdentityAuthority from "@/types/identity-authority/module/types";
 
 export default function Users() {
   const {
@@ -23,14 +24,15 @@ export default function Users() {
     getPreviousPage,
     closeSearch,
   } = useUserList();
-  const [userList, setUserList] = useState<Array<{}>>([]);
   const [formKey, setFormKey] = useState(0);
   const dialogRef = useRef<DialogRef>(null);
   const handleAddUserClick = () => {
     setFormKey(Date.now());
     dialogRef.current?.open();
   };
-  const handleManageUserClick = (row: { [key: string]: any }) => {};
+  const handleManageUserClick = (row: IdentityAuthority.Users.Snippet) => {
+    console.log(row);
+  };
   const handleSearchSubmit = (searchTerm: string) => {
     searchUser(searchTerm);
   };
