@@ -1,0 +1,22 @@
+.logo_wrapper {
+  display: flex;
+  width: max-content;
+  border-radius: 10px;
+}
+
+.logo_svg {
+  width: 20px;
+  margin-left: 10px;
+  fill: #10bed4;
+  transform: rotate(30deg);
+}
+
+.logo_text {
+  font-size: 1.3em;
+  letter-spacing: -0.7px;
+  font-family: "Outfit";
+  font-weight: 800;
+  background: linear-gradient(90deg, #62dab4, #10bed4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

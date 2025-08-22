@@ -1,49 +1,47 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface UserState {
-    value: {
-        isSignedIn: false
-    } | {
-        isSignedIn: true
-        userId: string
-        authToken: string
-    }
+  value: {
+    userId: string;
+    authToken: string;
+  };
 }
 
-type SignedInUser = Extract<UserState['value'], { isSignedIn: true }>
+export type SignedInUser = UserState["value"];
 
 const initialState: UserState = {
-    value: {
-        isSignedIn: false
-    }
-}
+  value: {
+    userId: "",
+    authToken: "",
+  },
+};
 
 const userSlice = createSlice({
-    name: 'user',
-    initialState,
-    reducers: {
-        createUserSession: (state, action: PayloadAction<SignedInUser>) => {
-            state.value = {
-                isSignedIn: true,
-                userId: action.payload.userId,
-                authToken: action.payload.authToken
-            }
-        },
-        refreshAuthToken: (state, action: PayloadAction<SignedInUser>) => {
-            state.value = {
-                isSignedIn: true,
-                userId: action.payload.userId,
-                authToken: action.payload.authToken
-            }
-        },
-        clearUserSession: (state) => {
-            state.value = {
-                isSignedIn: false
-            }
-        }
-    }
-})
+  name: "user",
+  initialState,
+  reducers: {
+    createUserSession: (state, action: PayloadAction<UserState["value"]>) => {
+      state.value = {
+        userId: action.payload.userId,
+        authToken: action.payload.authToken,
+      };
+    },
+    refreshAuthToken: (state, action: PayloadAction<UserState["value"]>) => {
+      state.value = {
+        userId: action.payload.userId,
+        authToken: action.payload.authToken,
+      };
+    },
+    clearUserSession: (state) => {
+      state.value = {
+        userId: "",
+        authToken: "",
+      };
+    },
+  },
+});
 
-export const { createUserSession, refreshAuthToken, clearUserSession } = userSlice.actions
+export const { createUserSession, refreshAuthToken, clearUserSession } =
+  userSlice.actions;
 
-export default userSlice.reducer
+export default userSlice.reducer;
