@@ -1,0 +1,114 @@
+"use client";
+
+import { useState } from "react";
+import { httpGet, httpPost } from "@/services/httpClient";
+import * as IdentityAuthority from "@/types/identity-authority/module/types";
+import Alert from "../Alert";
+import Loader from "../Loader";
+import { useDispatch } from "react-redux";
+import { createUserSession } from "@/state/user/userSlice";
+import { usePathname, useRouter } from "next/navigation";
+import { setUserSession } from "@/services/userSession";
+import config from "@/config";
+import Password from "../Forms/Inputs/Password";
+import EmailAddress from "../Forms/Inputs/EmailAddress";
+import useForm from "@/hooks/forms/useForm";
+
+export default function Login() {
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const { values, errors, setValue, setError } = useForm({
+    email: "",
+  });
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const email = values.email;
+    console.log({ email, password });
+    if (email.trim() === "" || password.trim() === "") {
+      return;
+    }
+    try {
+      const response =
+        await httpPost<IdentityAuthority.Users.Endpoints.AccessReport>({
+          host: config.iauth.host,
+          path: "/identity-authority/access-report",
+          params: {},
+          data: {
+            provider: "iauth",
+            email_address:
+              email as IdentityAuthority.Users.Endpoints.AccessReport["request"]["data"]["email_address"],
+            password:
+              password as IdentityAuthority.Users.Endpoints.AccessReport["request"]["data"]["password"],
+          },
+          authToken: null,
+        });
+      if (!response.is_user_registered) {
+        throw new Error("Sorry, invalid email or password");
+      }
+      if (response.access_type !== "allowed") {
+        throw new Error("You are not allowed to access this application.");
+      }
+      dispatch(
+        createUserSession({
+          isSignedIn: true,
+          userId: response.user_id,
+          authToken: response.token,
+        })
+      );
+      setUserSession({
+        userId: response.user_id,
+        authToken: response.token,
+      });
+      router.push("/");
+    } catch (error) {
+      setShowErrorMessage(true);
+      setErrorMessage("Your email or password is incorrect.");
+    }
+  };
+  return (
+    <div>
+      <form onSubmit={handleSubmit} className="space-y-3">
+        <EmailAddress
+          value={values.email}
+          error={errors.email ?? null}
+          onChange={async (value) => {
+            setValue("email", value);
+          }}
+        />
+        <Password
+          value={password}
+          onChange={(value) => {
+            setPassword(value);
+          }}
+        />
+        <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center gap-x-3">
+            <input
+              type="checkbox"
+              id="remember-me-checkbox"
+              className="checkbox-item peer hidden"
+            />
+            <label
+              htmlFor="remember-me-checkbox"
+              className="relative flex w-5 h-5 bg-white peer-checked:bg-indigo-600 rounded-md border ring-offset-2 ring-indigo-600 duration-150 peer-active:ring cursor-pointer after:absolute after:inset-x-0 after:top-[3px] after:m-auto after:w-1.5 after:h-2.5 after:border-r-2 after:border-b-2 after:border-white after:rotate-45"
+            ></label>
+            <span>Remember me</span>
+          </div>
+          <a
+            href="javascript:void(0)"
+            className="text-center text-indigo-600 hover:text-indigo-500"
+          >
+            Forgot password?
+          </a>
+        </div>
+        <button className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150">
+          Sign in
+        </button>
+      </form>
+      {showErrorMessage && <Alert type="error" message={errorMessage} />}
+    </div>
+  );
+}
