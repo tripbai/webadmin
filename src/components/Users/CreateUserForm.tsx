@@ -26,9 +26,13 @@ import * as IdentityAuthority from "@/types/identity-authority/module/types";
 
 type CreateUserFormProps = {
   onSuccess: () => void;
+  onCancel: () => void;
 };
 
-export default function CreateUserForm({ onSuccess }: CreateUserFormProps) {
+export default function CreateUserForm({
+  onSuccess,
+  onCancel,
+}: CreateUserFormProps) {
   const { values, errors, setValue, setError } = useForm<{
     email: IdentityAuthority.Users.Fields.EmailAddress;
     username: IdentityAuthority.Users.Fields.Username;
@@ -43,19 +47,31 @@ export default function CreateUserForm({ onSuccess }: CreateUserFormProps) {
     password: "" as IdentityAuthority.Users.Fields.RawPassword,
   });
   const [fullNameError, setFullNameError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
 
   const clickSubmitButton = async () => {
-    try {
-      await createUser({
-        firstName: values.firstName,
-        lastName: values.lastName,
-        emailAddress: values.email,
-        password: values.password,
-        username: values.username,
-      });
-    } catch (error) {
-      console.error("Error creating user:", error);
+    await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulate network delay
+    // try {
+    //   await createUser({
+    //     firstName: values.firstName,
+    //     lastName: values.lastName,
+    //     emailAddress: values.email,
+    //     password: values.password,
+    //     username: values.username,
+    //   });
+    // } catch (error) {
+    //   console.error("Error creating user:", error);
+    // }
+  };
+  const closeForm = () => {
+    if (formError !== null) {
+      return;
     }
+    setFullNameError(null);
+    setTimeout(() => {
+      console.log("User creation form closed");
+      onSuccess();
+    }, 0);
   };
   return (
     <div className="w-md space-y-4">
@@ -151,11 +167,12 @@ export default function CreateUserForm({ onSuccess }: CreateUserFormProps) {
       </div>
 
       <div className="w-full pt-6 flex justify-end space-x-2">
-        <SimpleButton type="secondary" text="Cancel" onClick={onSuccess} />
+        <SimpleButton type="secondary" text="Cancel" onClick={onCancel} />
         <ButtonWithSpinner
           onClick={clickSubmitButton}
           text="Create User"
           type="primary"
+          onComplete={closeForm}
         />
       </div>
     </div>

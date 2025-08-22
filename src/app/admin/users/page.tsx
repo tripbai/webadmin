@@ -10,6 +10,7 @@ import RacoonTable from "@/components/Tables/RacoonTable";
 import CreateUserForm from "@/components/Users/CreateUserForm";
 import useUserList from "@/hooks/identity-authority/useUserList";
 import { useEffect, useRef, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Users() {
   const {
@@ -23,14 +24,13 @@ export default function Users() {
     closeSearch,
   } = useUserList();
   const [userList, setUserList] = useState<Array<{}>>([]);
+  const [formKey, setFormKey] = useState(0);
   const dialogRef = useRef<DialogRef>(null);
   const handleAddUserClick = () => {
-    console.log("Add User Clicked");
+    setFormKey(Date.now());
     dialogRef.current?.open();
   };
-  const handleManageUserClick = (row: { [key: string]: any }) => {
-    console.log("Manage User Clicked", row);
-  };
+  const handleManageUserClick = (row: { [key: string]: any }) => {};
   const handleSearchSubmit = (searchTerm: string) => {
     searchUser(searchTerm);
   };
@@ -114,8 +114,18 @@ export default function Users() {
         </main>
       </div>
       <Dialog ref={dialogRef}>
-        {({ close }) => <CreateUserForm onSuccess={close} />}
+        {({ close }) => (
+          <CreateUserForm
+            key={formKey} // force re-mount on each open
+            onSuccess={() => {
+              close();
+              toast.success("User created successfully!");
+            }}
+            onCancel={close}
+          />
+        )}
       </Dialog>
+      <Toaster />
     </section>
   );
 }
