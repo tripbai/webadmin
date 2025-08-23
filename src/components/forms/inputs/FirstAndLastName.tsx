@@ -31,6 +31,7 @@ export default function FirstAndLastName({ value, error, onChange }: Props) {
           <input
             type="text"
             placeholder="John"
+            value={firstName}
             className={`pr-12 pl-3 is-input ${getInputStateBasedClass()}`}
             onChange={(e) => setFirstName(e.target.value)}
             onBlur={() => handleBlur("firstName")}
@@ -41,6 +42,7 @@ export default function FirstAndLastName({ value, error, onChange }: Props) {
           <input
             type="text"
             placeholder="Doe"
+            value={lastName}
             className={`pr-12 pl-3 is-input ${getInputStateBasedClass()}`}
             onChange={(e) => setLastName(e.target.value)}
             onBlur={() => handleBlur("lastName")}
