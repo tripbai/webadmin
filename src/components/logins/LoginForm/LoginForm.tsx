@@ -97,7 +97,7 @@ export default function LoginForm() {
           </div>
           <a
             href="javascript:void(0)"
-            className="text-center text-indigo-600 hover:text-indigo-500"
+            className="is-link-primary text-center text-indigo-600 hover:text-indigo-500"
           >
             Forgot password?
           </a>
