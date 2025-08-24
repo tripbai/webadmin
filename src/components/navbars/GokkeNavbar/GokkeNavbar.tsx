@@ -32,8 +32,8 @@ export default function GokkeNavbar() {
 
   return (
     <>
-      <div className="w-full flex-none h-[67px] border-b border-red-900"></div>
-      <nav className="z-1 flex-none h-[67px] fixed top-0 bg-gray-100 dark:bg-gray-500 dark:border-gray-700 border-gray-300 w-full">
+      <div className="w-full flex-none h-[67px]"></div>
+      <nav className="z-1 flex-none h-[67px] fixed top-0 bg-white border-b border-gray-300 w-full">
         <div className="items-center px-4 mx-auto md:flex align-center md:px-8">
           <div className="flex items-center justify-between py-3 md:py-5 md:block">
             <HorizontalLogo />
