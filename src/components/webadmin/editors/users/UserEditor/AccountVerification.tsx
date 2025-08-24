@@ -1,13 +1,19 @@
 import ButtonWithSpinner from "@/components/forms/buttons/ButtonWithSpinner";
+import { updateUserInternal } from "@/services/identity-authority/userService";
 import * as IdentityAuthority from "@/types/identity-authority/module/types";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { RootState } from "@/state/store";
 
 type Props = {
   user: IdentityAuthority.Users.Endpoints.GetModel["response"];
 };
 
 export default function AccountVerification({ user }: Props) {
+  const signedInUser = useSelector(
+    (state: RootState) => state.signedInUser.value
+  );
   const [localUser, setLocalUser] = useState(user);
   return (
     <section className="w-full">
@@ -69,7 +75,13 @@ export default function AccountVerification({ user }: Props) {
                 <p className="mt-3">
                   <ButtonWithSpinner
                     onClick={async () => {
-                      await new Promise((resolve) => setTimeout(resolve, 3000));
+                      await updateUserInternal({
+                        params: {
+                          user_id: user.id,
+                          is_email_verified: true,
+                        },
+                        signedInUser,
+                      });
                       setLocalUser({
                         ...localUser,
                         is_email_verified: true,
@@ -77,9 +89,7 @@ export default function AccountVerification({ user }: Props) {
                       });
                     }}
                     onComplete={async () => {
-                      toast.success(
-                        "[Test] User account verified successfully"
-                      );
+                      toast.success("User account verified successfully");
                     }}
                     text="Force Account Verification"
                     type="primary"
