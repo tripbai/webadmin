@@ -108,6 +108,10 @@ export const updateUserInternal = async ({
   params: IdentityAuthority.Users.Endpoints.InternalUserUpdate["request"]["data"];
   signedInUser: SignedInUser;
 }) => {
+  const originalUserData = await getUserById({
+    userId: params.user_id,
+    signedInUser: signedInUser,
+  });
   await httpPatch<IdentityAuthority.Users.Endpoints.InternalUserUpdate>({
     host: config.iauth.host,
     path: "/identity-authority/update/user",
@@ -115,16 +119,18 @@ export const updateUserInternal = async ({
     data: params,
     authToken: signedInUser.authToken,
   });
-  // storeUpdateUserAction({
-  //   id: params.user_id,
-  //   first_name: params.first_name,
-  //   last_name: params.last_name,
-  //   email_address: params.email_address,
-  //   username: params.username,
-  //   is_email_verified: false,
-  //   user_type: "concrete",
-  //   status: "unverified",
-  //   profile_photo: null,
-  //   cover_photo: null,
-  // });
+  storeUpdateUserAction({
+    id: params.user_id,
+    first_name: params.first_name ?? originalUserData.first_name,
+    last_name: params.last_name ?? originalUserData.last_name,
+    // @ts-expect-error - successful patch above means the email address is unique
+    email_address: params.email_address ?? originalUserData.email_address,
+    // @ts-expect-error - successful patch above means the username is unique
+    username: params.username ?? originalUserData.username,
+    is_email_verified: false,
+    user_type: "concrete",
+    status: "unverified",
+    profile_photo: null,
+    cover_photo: null,
+  });
 };
