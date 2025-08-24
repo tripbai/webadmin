@@ -12,6 +12,17 @@ export const storeCreateUserAction = async (
   });
 };
 
+export const storeUpdateUserAction = async (
+  userSnippet: IdentityAuthority.Users.Snippet
+) => {
+  await recordAction({
+    type: "update",
+    collection: "users",
+    recordId: userSnippet.id,
+    data: userSnippet,
+  });
+};
+
 export const replayUserActions = async (
   userSnippets: IdentityAuthority.Users.Snippet[],
   includeCreatedUsers: boolean
