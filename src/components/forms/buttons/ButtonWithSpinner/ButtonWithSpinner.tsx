@@ -3,7 +3,7 @@ import styles from "./ButtonWithSpinner.module.css";
 
 type Props = {
   onClick: () => Promise<void>;
-  onComplete: () => void;
+  onComplete?: () => void;
   text: string;
   type: "primary" | "secondary" | "info" | "danger";
 };
@@ -23,7 +23,7 @@ export default function ButtonWithSpinner({
     } finally {
       setIsLoading(false);
     }
-    onComplete();
+    onComplete?.();
   };
   const getButtonClasses = () => {
     if (isLoading) return "bg-gray-400 " + styles.spinning_button;
