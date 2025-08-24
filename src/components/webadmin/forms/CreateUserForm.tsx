@@ -33,18 +33,14 @@ export default function CreateUserForm({
   onSuccess,
   onCancel,
 }: CreateUserFormProps) {
-  const { values, errors, setValue, setError } = useForm<{
-    email: IdentityAuthority.Users.Fields.EmailAddress;
-    username: IdentityAuthority.Users.Fields.Username;
-    firstName: IdentityAuthority.Profile.Fields.FirstName;
-    lastName: IdentityAuthority.Profile.Fields.LastName;
-    password: IdentityAuthority.Users.Fields.RawPassword;
-  }>({
-    email: "" as IdentityAuthority.Users.Fields.EmailAddress,
-    username: "" as IdentityAuthority.Users.Fields.Username,
-    firstName: "" as IdentityAuthority.Profile.Fields.FirstName,
-    lastName: "" as IdentityAuthority.Profile.Fields.LastName,
-    password: "" as IdentityAuthority.Users.Fields.RawPassword,
+  const { values, errors, setValue, setError } = useForm({
+    initialValues: {
+      email: "" as IdentityAuthority.Users.Fields.EmailAddress,
+      username: "" as IdentityAuthority.Users.Fields.Username,
+      firstName: "" as IdentityAuthority.Profile.Fields.FirstName,
+      lastName: "" as IdentityAuthority.Profile.Fields.LastName,
+      password: "" as IdentityAuthority.Users.Fields.RawPassword,
+    },
   });
   const [fullNameError, setFullNameError] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);

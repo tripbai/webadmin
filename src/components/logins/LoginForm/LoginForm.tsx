@@ -17,7 +17,9 @@ export default function LoginForm() {
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { values, errors, setValue, setError } = useForm({
-    email: "",
+    initialValues: {
+      email: "",
+    },
   });
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
@@ -25,7 +27,6 @@ export default function LoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const email = values.email;
-    console.log({ email, password });
     if (email.trim() === "" || password.trim() === "") {
       return;
     }
