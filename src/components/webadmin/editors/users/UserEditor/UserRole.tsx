@@ -43,7 +43,7 @@ export default function UserRole({ user }: Props) {
     }
   };
   return (
-    <section className="w-full">
+    <section id="user-roles" className="w-full">
       <h3 className="text-lg font-semibold">User Role</h3>
       <p className="text-gray-500 mt-1">
         Update the user's role information here.

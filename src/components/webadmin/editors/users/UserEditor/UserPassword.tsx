@@ -7,7 +7,7 @@ type Props = {
 
 export default function UserPassword({ user }: Props) {
   return (
-    <section className="w-full">
+    <section id="reset-password" className="w-full">
       <h3 className="text-lg font-semibold">Password</h3>
       <p className="text-gray-500 mt-1">
         Send a password reset email to the user.

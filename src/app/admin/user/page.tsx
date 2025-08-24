@@ -12,6 +12,7 @@ import Link from "next/link";
 import InnerLoader from "@/components/page/InnerLoader";
 import PageError from "@/components/page/errors/PageError";
 import UserEditor from "@/components/webadmin/editors/users/UserEditor";
+import AnchorMenu from "@/components/sidebars/AnchorMenu";
 
 type DataState =
   | { status: "initial" }
@@ -72,11 +73,24 @@ export default function ManageUserPage() {
             />
           )}
           {dataState.status === "loaded" && (
-            <div className="w-full max-w-7xl mx-auto flex">
+            <div className="w-full max-w-7xl mx-auto flex space-x-4">
               <div className="w-3/5">
                 <UserEditor user={dataState.user} />
               </div>
-              <div className="w-2/5"></div>
+              <div className="w-2/5 pl-4 border-l border-gray-200">
+                <AnchorMenu
+                  className="sticky top-20"
+                  items={[
+                    { id: "user-profile", label: "User Profile" },
+                    { id: "account-settings", label: "Reset Password" },
+                    { id: "account-details", label: "Account Details" },
+                    { id: "user-roles", label: "User Roles" },
+                    { id: "user-suspension", label: "User Suspension" },
+                    { id: "ban-user", label: "Ban User" },
+                    { id: "archive-user", label: "Archive User" },
+                  ]}
+                />
+              </div>
             </div>
           )}
         </main>

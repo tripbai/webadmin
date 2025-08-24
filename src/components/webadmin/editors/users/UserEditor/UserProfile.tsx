@@ -79,7 +79,7 @@ export default function UserProfile({ user }: Props) {
   );
   const [fullNameError, setFullNameError] = useState<string | null>(null);
   return (
-    <section className="w-full">
+    <section id="user-profile" className="w-full">
       <h3 className="text-lg font-semibold">User Profile</h3>
       <p className="text-gray-500 mt-1">
         This information is visible to the user in their account.

@@ -7,7 +7,7 @@ type Props = {
 
 export default function AccountDetails({ user }: Props) {
   return (
-    <section className="w-full">
+    <section id="account-details" className="w-full">
       <h3 className="text-lg font-semibold">Account Details</h3>
       <p className="text-gray-500 mt-1">Details about the user's account.</p>
       <div className="mt-4 space-y-2">

@@ -11,7 +11,7 @@ export default function DangerZone({ user }: Props) {
   const [localUser, setLocalUser] = useState(user);
   return (
     <section className="w-full space-y-4">
-      <div className="flex justify-between">
+      <div id="user-suspension" className="flex justify-between">
         <div>
           <h3 className="font-semibold">User Suspension</h3>
           <p className="text-gray-500 mt-1">
@@ -59,7 +59,7 @@ export default function DangerZone({ user }: Props) {
         </div>
       </div>
 
-      <div className="flex justify-between">
+      <div id="ban-user" className="flex justify-between">
         <div>
           <h3 className="font-semibold">Ban User</h3>
           <p className="text-gray-500 mt-1">
@@ -92,7 +92,7 @@ export default function DangerZone({ user }: Props) {
         </div>
       </div>
 
-      <div className="flex justify-between">
+      <div id="archive-user" className="flex justify-between">
         <div>
           <h3 className="font-semibold">Archive User</h3>
           <p className="text-gray-500 mt-1">
