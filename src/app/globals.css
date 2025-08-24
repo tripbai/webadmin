@@ -49,6 +49,9 @@ body {
   }
 }
 
+@layer utilities {
+}
+
 @layer components {
   .is-background-primary {
     background: linear-gradient(90deg, #62dab4, #10bed4);
@@ -90,5 +93,11 @@ body {
 
   .is-select:focus {
     border-color: #10bed4;
+  }
+
+  .hover\:is-text-primary:hover {
+    background: linear-gradient(90deg, #62dab4, #10bed4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }

@@ -11,7 +11,7 @@ export default function AnchorMenu({ items, className }: Props) {
           <li key={item.id}>
             <a
               href={`#${item.id}`}
-              className="text-gray-500 hover:text-gray-900 text-sm"
+              className="text-gray-500 text-sm hover:is-text-primary inline-block"
             >
               {item.label}
             </a>

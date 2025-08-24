@@ -184,12 +184,12 @@ export default function SimpleSidebar() {
                 <li key={idx}>
                   <Link
                     href={item.href}
-                    className="flex items-center gap-x-2 text-gray-600 p-2 rounded-lg  hover:bg-gray-50 active:bg-gray-100 duration-150"
+                    className="group flex items-center gap-x-2 text-gray-600 p-2 rounded-lg hover:bg-gray-50 active:bg-gray-100 duration-150"
                   >
                     <div className="text-gray-400 dark:text-gray-300">
                       {item.icon}
                     </div>
-                    <span className="md:text-sm">{item.name}</span>
+                    <span className="hover:is-text-primary">{item.name}</span>
                   </Link>
                 </li>
               ))}
