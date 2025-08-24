@@ -1,9 +1,12 @@
-import { httpGet, httpPost } from "../httpClient";
+import { httpGet, httpPatch, httpPost } from "../httpClient";
 import * as IdentityAuthority from "../../types/identity-authority/module/types";
 import * as Core from "@/types/core/module/types";
 import { SignedInUser } from "@/state/user/userSlice";
 import config from "@/config";
-import { storeCreateUserAction } from "./userActionReels";
+import {
+  storeCreateUserAction,
+  storeUpdateUserAction,
+} from "./userActionReels";
 
 export const doesUserEmailExists = async (email: string): Promise<boolean> => {
   try {
@@ -96,4 +99,32 @@ export const getUserById = async ({
     data: {},
     authToken: signedInUser.authToken,
   });
+};
+
+export const updateUserInternal = async ({
+  params,
+  signedInUser,
+}: {
+  params: IdentityAuthority.Users.Endpoints.InternalUserUpdate["request"]["data"];
+  signedInUser: SignedInUser;
+}) => {
+  await httpPatch<IdentityAuthority.Users.Endpoints.InternalUserUpdate>({
+    host: config.iauth.host,
+    path: "/identity-authority/update/user",
+    params: {},
+    data: params,
+    authToken: signedInUser.authToken,
+  });
+  // storeUpdateUserAction({
+  //   id: params.user_id,
+  //   first_name: params.first_name,
+  //   last_name: params.last_name,
+  //   email_address: params.email_address,
+  //   username: params.username,
+  //   is_email_verified: false,
+  //   user_type: "concrete",
+  //   status: "unverified",
+  //   profile_photo: null,
+  //   cover_photo: null,
+  // });
 };
