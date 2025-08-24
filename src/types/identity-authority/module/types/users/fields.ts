@@ -2,7 +2,6 @@
 export type EmailAddress = string & {
   minLen: 8;
   maxLen: 64;
-  verifiedUnique: false;
   key: "email_address";
 };
 /** A valid email address, and certified unique throughout the application */
@@ -16,7 +15,6 @@ export type UniqueEmailAddress = string & {
 export type Username = string & {
   minLen: 5;
   maxLen: 32;
-  verifiedUnique: false;
   key: "username";
 };
 /** A valid username, and certified unique throughout the application */
