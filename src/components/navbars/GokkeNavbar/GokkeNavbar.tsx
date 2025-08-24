@@ -31,28 +31,31 @@ export default function GokkeNavbar() {
   };
 
   return (
-    <nav className="bg-gray-100 dark:bg-gray-500 dark:border-gray-700 border-gray-300 w-full md:static md:text-sm">
-      <div className="items-center px-4 mx-auto md:flex md:px-8">
-        <div className="flex items-center justify-between py-3 md:py-5 md:block">
-          <HorizontalLogo />
+    <>
+      <div className="w-full flex-none h-[67px] border-b border-red-900"></div>
+      <nav className="z-1 flex-none h-[67px] fixed top-0 bg-gray-100 dark:bg-gray-500 dark:border-gray-700 border-gray-300 w-full">
+        <div className="items-center px-4 mx-auto md:flex align-center md:px-8">
+          <div className="flex items-center justify-between py-3 md:py-5 md:block">
+            <HorizontalLogo />
+          </div>
+          <div className={`flex-1 pb-3 mt-8 md:block md:pb-0 md:mt-0 block`}>
+            <ul className="justify-end items-center space-y-6 md:flex md:space-x-6 md:space-y-0">
+              <span className="hidden w-px h-6 bg-gray-300 md:block"></span>
+              <div className="space-y-3 items-center gap-x-6 md:flex md:space-y-0">
+                {isLoading && (
+                  <div className="--skeleton-text --skeleton w-24"></div>
+                )}
+                {!isLoading && data !== undefined && (
+                  <div className="">
+                    {data.snippet.first_name} {data.snippet.last_name}
+                  </div>
+                )}
+                <li>{renderProfilePhoto()}</li>
+              </div>
+            </ul>
+          </div>
         </div>
-        <div className={`flex-1 pb-3 mt-8 md:block md:pb-0 md:mt-0 block`}>
-          <ul className="justify-end items-center space-y-6 md:flex md:space-x-6 md:space-y-0">
-            <span className="hidden w-px h-6 bg-gray-300 md:block"></span>
-            <div className="space-y-3 items-center gap-x-6 md:flex md:space-y-0">
-              {isLoading && (
-                <div className="--skeleton-text --skeleton w-24"></div>
-              )}
-              {!isLoading && data !== undefined && (
-                <div className="">
-                  {data.snippet.first_name} {data.snippet.last_name}
-                </div>
-              )}
-              <li>{renderProfilePhoto()}</li>
-            </div>
-          </ul>
-        </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 }

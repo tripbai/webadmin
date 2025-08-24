@@ -173,11 +173,13 @@ export default function SimpleSidebar() {
 
   return (
     <>
-      <nav className="w-full h-full border-r border-gray-300 dark:border-gray-700 space-y-8 sm:w-50 flex-shrink-0">
+      <div className="w-60 h-full border-r border-gray-300 dark:border-gray-700"></div>
+      <nav className="fixed h-screen space-y-8 w-60 flex-shrink-0 top-0 left-0">
         <div className="flex flex-col h-full">
           <div className="h-5 flex items-center px-8"></div>
           <div className="flex-1 flex flex-col h-full overflow-auto">
             <ul className="px-4 font-medium flex-1">
+              <div className="h-[67px] w-full"></div>
               {navTopItems.map((item, idx) => (
                 <li key={idx}>
                   <Link
