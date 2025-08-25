@@ -83,6 +83,7 @@ export const createUser = async ({
     profile_photo: null,
     cover_photo: null,
   });
+  return response;
 };
 
 export const getUserById = async ({

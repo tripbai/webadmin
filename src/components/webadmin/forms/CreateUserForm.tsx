@@ -23,6 +23,7 @@ import Username from "../../forms/inputs/Username";
 import Password from "../../forms/inputs/Password";
 import SimpleButton from "../../forms/buttons/SimpleButton";
 import * as IdentityAuthority from "@/types/identity-authority/module/types";
+import { useRouter } from "next/navigation";
 
 type CreateUserFormProps = {
   onSuccess: () => void;
@@ -33,6 +34,7 @@ export default function CreateUserForm({
   onSuccess,
   onCancel,
 }: CreateUserFormProps) {
+  const router = useRouter();
   const { values, errors, setValue, setError } = useForm({
     initialValues: {
       email: "" as IdentityAuthority.Users.Fields.EmailAddress,
@@ -47,13 +49,14 @@ export default function CreateUserForm({
 
   const clickSubmitButton = async () => {
     try {
-      await createUser({
+      const response = await createUser({
         firstName: values.firstName,
         lastName: values.lastName,
         emailAddress: values.email,
         password: values.password,
         username: values.username,
       });
+      router.push(`/admin/user?id=${response.user_id}`);
     } catch (error) {
       console.error("Error creating user:", error);
     }
@@ -64,7 +67,6 @@ export default function CreateUserForm({
     }
     setFullNameError(null);
     setTimeout(() => {
-      console.log("User creation form closed");
       onSuccess();
     }, 0);
   };
@@ -167,7 +169,6 @@ export default function CreateUserForm({
           onClick={clickSubmitButton}
           text="Create User"
           type="primary"
-          onComplete={closeForm}
         />
       </div>
     </div>
