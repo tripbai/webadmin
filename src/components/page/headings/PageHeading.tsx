@@ -18,9 +18,7 @@ export default function PageHeading({ title, subtitle, buttons }: Props) {
         <h3 className="text-gray-900 dark:text-gray-200 text-xl font-bold">
           {title}
         </h3>
-        <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">
-          {subtitle}
-        </p>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">{subtitle}</p>
       </div>
       <div className="mt-3 md:mt-0">
         {buttons.map((button, index) => (
