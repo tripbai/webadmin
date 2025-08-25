@@ -1,6 +1,14 @@
+"use client";
+
+import { destroySession } from "@/services/userSession";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { clearUserSession } from "@/state/user/userSlice";
+import { useRouter } from "next/navigation";
 
 export default function SimpleSidebar() {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const navTopItems = [
     {
       href: "/",
@@ -168,6 +176,13 @@ export default function SimpleSidebar() {
           />
         </svg>
       ),
+      onClick: () => {
+        destroySession();
+        dispatch(clearUserSession());
+        setTimeout(() => {
+          router.push("/login");
+        }, 1000);
+      },
     },
   ];
 
@@ -183,7 +198,7 @@ export default function SimpleSidebar() {
               {navTopItems.map((item, idx) => (
                 <li key={idx}>
                   <Link
-                    href={item.href}
+                    href={item.href !== "javascript:void(0)" ? item.href : "#"}
                     className="group flex items-center gap-x-2 text-gray-600 p-2 rounded-lg hover:bg-gray-50 active:bg-gray-100 duration-150"
                   >
                     <div className="text-gray-400 dark:text-gray-300">
@@ -199,7 +214,14 @@ export default function SimpleSidebar() {
                 {navBottomItems.map((item, idx) => (
                   <li key={idx}>
                     <Link
-                      href={item.href}
+                      href={
+                        item.href !== "javascript:void(0)" ? item.href : "#"
+                      }
+                      onClick={() => {
+                        if (item.onClick) {
+                          item.onClick();
+                        }
+                      }}
                       className="flex items-center gap-x-2 text-gray-600 p-2 rounded-lg  hover:bg-gray-50 active:bg-gray-100 duration-150"
                     >
                       <div className="text-gray-400 dark:text-gray-300">
