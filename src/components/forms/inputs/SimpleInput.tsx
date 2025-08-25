@@ -4,6 +4,7 @@ type Props = {
   value: string;
   label: string;
   isDisabled: boolean;
+  placeholder?: string;
   error: string | null;
   onChange: (value: string) => Promise<void>;
 };
@@ -13,6 +14,7 @@ export default function SimpleInput({
   value,
   error,
   isDisabled,
+  placeholder,
   onChange,
 }: Props) {
   const [inputValue, setInputValue] = useState(value);
@@ -30,7 +32,7 @@ export default function SimpleInput({
       <label className="text-gray-600 text-sm">{label}</label>
       <input
         type="text"
-        placeholder="John"
+        placeholder={placeholder}
         value={inputValue}
         disabled={isDisabled}
         className={`pr-12 pl-3 is-input ${getInputStateBasedClass()}`}
