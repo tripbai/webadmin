@@ -5,30 +5,63 @@ import NameInitialsAvatar from "@/components/avatars/NameInitialsAvatar";
 import HorizontalLogo from "@/components/logos/tripbai/HorizontalLogo";
 import { useUserSnippet } from "@/hooks/identity-authority/useUserSnippet";
 import { RootState } from "@/state/store";
-import { useSelector } from "react-redux";
+import Link from "next/link";
+import { destroySession } from "@/services/userSession";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { clearUserSession } from "@/state/user/userSlice";
+import { useRouter } from "next/navigation";
 
 export default function GokkeNavbar() {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const userState = useSelector((state: RootState) => state.signedInUser.value);
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [cachedUser, setCachedUser] = useState<any>(null);
+
   const { data, error, isLoading, isError } = useUserSnippet(userState.userId);
+
+  // cache the snippet once it's available
+  useEffect(() => {
+    if (data) setCachedUser(data);
+  }, [data]);
+
   const renderProfilePhoto = () => {
-    if (isLoading || data === undefined) {
+    if ((isLoading && !cachedUser) || data === undefined) {
       return (
         <button className="cursor-pointer w-9 h-9 outline-none rounded-full ring-gray-200 ring-2 lg:focus:ring-indigo-600 --skeleton"></button>
       );
     }
-    if (isError) {
+    if (isError && !cachedUser) {
       return <div></div>;
     }
+
+    const snippet = data?.snippet || cachedUser?.snippet;
+
     return (
-      <button className="cursor-pointer">
+      <button
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        className="cursor-pointer"
+      >
         <Avatar
-          src={data.snippet.profile_photo}
-          alt={`${data.snippet.first_name} ${data.snippet.last_name}`}
-          fallback={NameInitialsAvatar({ firstName: data.snippet.first_name })}
+          src={snippet.profile_photo}
+          alt={`${snippet.first_name} ${snippet.last_name}`}
+          fallback={NameInitialsAvatar({ firstName: snippet.first_name })}
         />
       </button>
     );
   };
+
+  const handleLogout = () => {
+    destroySession();
+    setTimeout(() => {
+      dispatch(clearUserSession());
+      router.push("/login");
+    }, 1000);
+  };
+
+  const snippet = data?.snippet || cachedUser?.snippet;
 
   return (
     <>
@@ -42,12 +75,12 @@ export default function GokkeNavbar() {
             <ul className="justify-end items-center space-y-6 md:flex md:space-x-6 md:space-y-0">
               <span className="hidden w-px h-6 bg-gray-300 md:block"></span>
               <div className="space-y-3 items-center gap-x-6 md:flex md:space-y-0">
-                {isLoading && (
+                {isLoading && !snippet && (
                   <div className="--skeleton-text --skeleton w-24"></div>
                 )}
-                {!isLoading && data !== undefined && (
-                  <div className="">
-                    {data.snippet.first_name} {data.snippet.last_name}
+                {snippet && (
+                  <div>
+                    {snippet.first_name} {snippet.last_name}
                   </div>
                 )}
                 <li>{renderProfilePhoto()}</li>
@@ -56,6 +89,29 @@ export default function GokkeNavbar() {
           </div>
         </div>
       </nav>
+      <div
+        className={`mt-17 mr-4 absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg ring-1 ring-gray-200 ring-opacity-5 ${
+          isMenuOpen
+            ? "scale-100 opacity-100"
+            : "scale-95 opacity-0 pointer-events-none"
+        }`}
+      >
+        <div className="py-2">
+          <Link
+            href={`/admin/user?id=${snippet?.id ?? ""}`}
+            className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:is-text-primary rounded-md"
+          >
+            My Profile
+          </Link>
+          <Link
+            href="#"
+            onClick={handleLogout}
+            className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:is-text-primary rounded-md"
+          >
+            Logout
+          </Link>
+        </div>
+      </div>
     </>
   );
 }
