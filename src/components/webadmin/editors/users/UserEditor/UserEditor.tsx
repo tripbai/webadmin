@@ -5,6 +5,7 @@ import AccountVerification from "./AccountVerification";
 import AccountDetails from "./AccountDetails";
 import DangerZone from "./DangerZone";
 import UserRole from "./UserRole";
+import UserBackfillSnippet from "./UserBackfillSnippet";
 
 type Props = {
   user: IdentityAuthority.Users.Endpoints.GetModel["response"];
@@ -22,6 +23,8 @@ export default function UserEditor({ user }: Props) {
       <AccountVerification user={user} />
       <hr className="border-t border-gray-300 my-4" />
       <UserRole user={user} />
+      <hr className="border-t border-gray-300 my-4" />
+      <UserBackfillSnippet user={user} />
       <hr className="border-t border-gray-300 my-4" />
       <DangerZone user={user} />
       <hr className="border-t border-gray-300 my-4" />

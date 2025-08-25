@@ -85,6 +85,7 @@ export default function ManageUserPage() {
                     { id: "account-settings", label: "Reset Password" },
                     { id: "account-details", label: "Account Details" },
                     { id: "user-roles", label: "User Roles" },
+                    { id: "backfill-snippet", label: "Backfill Snippet" },
                     { id: "user-suspension", label: "User Suspension" },
                     { id: "ban-user", label: "Ban User" },
                     { id: "archive-user", label: "Archive User" },
