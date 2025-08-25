@@ -104,3 +104,19 @@ export type RemoveUserFromTeam = {
   };
   response: {};
 };
+export type GetTenantByUserId = {
+  request: {
+    path: "/identity-authority/get/tenant?user_id=:user_id";
+    method: "GET";
+    data: {};
+  };
+  response: {
+    entity_id: Core.Entity.Id;
+    name: string;
+    profile_photo: string | null;
+    cover_photo: string | null;
+    created_at: string;
+    updated_at: string;
+    archived_at: string | null;
+  };
+};
