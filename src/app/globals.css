@@ -47,6 +47,33 @@ body {
   a.is-link-primary:hover {
     opacity: 0.8; /* optional hover effect */
   }
+
+  .spin-animation {
+    border: 3.7px #d5d5d5 solid;
+    border-top: 3.7px #777777 solid;
+    border-radius: 50%;
+    -webkit-animation: spinAnimation 0.3s infinite linear;
+    animation: spinAnimation 0.3s infinite linear;
+    width: 17px;
+    height: 17px;
+  }
+
+  @-webkit-keyframes spinAnimation {
+    from {
+      -webkit-transform: rotate(0deg);
+    }
+    to {
+      -webkit-transform: rotate(359deg);
+    }
+  }
+  @keyframes spinAnimation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
 }
 
 @layer utilities {
