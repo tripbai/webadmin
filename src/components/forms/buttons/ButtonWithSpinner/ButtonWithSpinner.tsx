@@ -4,22 +4,28 @@ import styles from "./ButtonWithSpinner.module.css";
 type Props = {
   onClick: () => Promise<void>;
   onComplete?: () => void;
+  onSuccess?: () => void;
+  onError?: (error: Error) => void;
   text: string;
   type: "primary" | "secondary" | "info" | "danger";
 };
 
 export default function ButtonWithSpinner({
   onClick,
+  onComplete,
+  onSuccess,
+  onError,
   text,
   type,
-  onComplete,
 }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const clickButton = async () => {
     try {
       setIsLoading(true);
       await onClick();
+      onSuccess?.();
     } catch (error) {
+      onError?.(error instanceof Error ? error : new Error("Unknown error"));
     } finally {
       setIsLoading(false);
     }
