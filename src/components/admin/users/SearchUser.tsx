@@ -2,11 +2,17 @@ import CantonSearchInput from "@/components/forms/inputs/search/CantonSearchInpu
 import { searchUser } from "@/services/identity-authority/webadmin/searchUser";
 import * as IdentityAuthority from "@/types/identity-authority/module/types";
 
-export default function SearchUser() {
+type Props = {
+  label: string;
+  error: string | null;
+  onSelectResult: (result: IdentityAuthority.Users.Snippet) => void;
+};
+
+export default function SearchUser({ label, error, onSelectResult }: Props) {
   return (
     <section>
       <CantonSearchInput
-        label="Organization Admin"
+        label={label}
         placeholder="Search user..."
         onSubmit={async (value) => {
           let result: IdentityAuthority.Users.Snippet | null = null;
@@ -27,8 +33,11 @@ export default function SearchUser() {
             <span className="text-gray-500 font-light">@{result.username}</span>
           </>
         )}
-        onSelectResult={(data) => {}}
+        onSelectResult={(data) => {
+          onSelectResult(data);
+        }}
       />
+      {error && <div className="text-red-500 text-sm mt-1">{error}</div>}
     </section>
   );
 }

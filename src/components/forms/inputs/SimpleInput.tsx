@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 
 type Props = {
   value: string;
@@ -17,6 +17,7 @@ export default function SimpleInput({
   placeholder,
   onChange,
 }: Props) {
+  const inputId = useId();
   const [inputValue, setInputValue] = useState(value);
   const handleBlur = async () => {
     if (isDisabled) return; // skip if input is disabled
@@ -28,9 +29,12 @@ export default function SimpleInput({
     return "bg-transparent";
   };
   return (
-    <>
-      <label className="text-gray-600 text-sm">{label}</label>
+    <div>
+      <label htmlFor={inputId} className="text-gray-600 text-sm">
+        {label}
+      </label>
       <input
+        id={inputId}
         type="text"
         placeholder={placeholder}
         value={inputValue}
@@ -39,6 +43,7 @@ export default function SimpleInput({
         onChange={(e) => setInputValue(e.target.value)}
         onBlur={handleBlur}
       />
-    </>
+      {error && <div className="text-red-500 text-sm">{error}</div>}
+    </div>
   );
 }

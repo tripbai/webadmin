@@ -6,6 +6,7 @@ import SimpleSidebar from "@/components/sidebars/SimpleSidebar/SimpleSidebar";
 import Dialog, { DialogRef } from "@/components/utilities/Dialog/Dialog";
 import CreateOrganizationForm from "@/components/webadmin/forms/CreateOrganizationForm";
 import { useRef, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function OrganizationsPage() {
   const dialogRef = useRef<DialogRef>(null);
@@ -42,11 +43,13 @@ export default function OrganizationsPage() {
             key={formKey} // force re-mount on each open
             onSuccess={() => {
               close();
+              toast.success("Organization created successfully");
             }}
             onCancel={close}
           />
         )}
       </Dialog>
+      <Toaster />
     </section>
   );
 }
