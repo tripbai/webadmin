@@ -185,7 +185,7 @@ export default function SimpleSidebar() {
         <div className="flex flex-col h-full">
           <div className="h-5 flex items-center px-8"></div>
           <div className="flex-1 flex flex-col h-full overflow-auto">
-            <ul className="px-4 font-medium flex-1">
+            <ul className="px-4 flex-1">
               <div className="h-[67px] w-full"></div>
               {navTopItems.map((item, idx) => (
                 <li key={idx}>
@@ -196,13 +196,15 @@ export default function SimpleSidebar() {
                     <div className="text-gray-400 dark:text-gray-300">
                       {item.icon}
                     </div>
-                    <span className="hover:is-text-primary">{item.name}</span>
+                    <span className="hover:is-text-primary text-md">
+                      {item.name}
+                    </span>
                   </Link>
                 </li>
               ))}
             </ul>
             <div>
-              <ul className="px-4 pb-4 font-medium">
+              <ul className="px-4 pb-4">
                 {navBottomItems.map((item, idx) => (
                   <li key={idx}>
                     <Link
@@ -219,7 +221,9 @@ export default function SimpleSidebar() {
                       <div className="text-gray-400 dark:text-gray-300">
                         {item.icon}
                       </div>
-                      <span className="hover:is-text-primary">{item.name}</span>
+                      <span className="hover:is-text-primary text-md">
+                        {item.name}
+                      </span>
                     </Link>
                   </li>
                 ))}
