@@ -8,6 +8,7 @@ import { getTenantByUserId } from "@/services/identity-authority/webadmin/getTen
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import { assertIsOrganizationBusinessName } from "@/services/tripbai/organizationAssertions";
+import SearchLocation from "@/components/admin/locations/SearchLocation";
 
 type Props = {
   onSuccess: () => void;
@@ -66,6 +67,10 @@ export default function CreateOrganizationForm({ onSuccess, onCancel }: Props) {
               setError("organizationName", errorMessage);
             }
           }}
+        />
+        <SearchLocation
+          label="Business Address"
+          placeholder="Search for a location..."
         />
       </div>
       <div className="w-full pt-6 flex justify-end space-x-2">

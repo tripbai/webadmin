@@ -1,54 +1,65 @@
 import { JSX, useEffect, useId, useState } from "react";
 
-type Result<TResult extends { [key: string]: any }> = {
-  data: TResult;
-  element: JSX.Element;
-};
-
-type Props<TResult extends { [key: string]: any }> = {
+type AutocompleteResult = {
   label: string;
-  placeholder: string;
-  leftIcon?: JSX.Element;
-  onChange: (value: string) => Promise<Array<Result<TResult>>>;
-  onSelect: (data: Result<TResult>["data"]) => void;
-  delay?: number; // debounce delay in ms
+  value: string;
 };
 
-export default function AutocompleteInput<
-  TResult extends { [key: string]: any }
->({
-  label,
-  placeholder,
-  leftIcon,
-  onChange,
-  onSelect,
-  delay = 1000, // default: 1000ms
-}: Props<TResult>) {
-  const [internalValue, setInternalValue] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [results, setResults] = useState<Array<Result<TResult>>>([]);
-  const [lastSearchedValue, setLastSearchedValue] = useState<string>("");
-  const inputId = useId();
+type Props<TResult extends AutocompleteResult> = {
+  placeholder: string;
+  label: string;
+  onSubmit: (searchTerm: string) => Promise<Array<TResult>>;
+  onSelectResult: (result: TResult) => void;
+  initialLabel?: string; // allow parent to pass initial label
+  delay?: number; // debounce delay
+  renderLeftIcon?: () => JSX.Element;
+};
 
-  // Debounce effect with race-condition handling
+export default function AutocompleteInput<TResult extends AutocompleteResult>({
+  placeholder,
+  label,
+  onSubmit,
+  onSelectResult,
+  renderLeftIcon,
+  initialLabel = "",
+  delay = 800,
+}: Props<TResult>) {
+  const inputId = useId();
+  const [searchTerm, setSearchTerm] = useState(initialLabel);
+  const [isLoading, setIsLoading] = useState(false);
+  const [results, setResults] = useState<Array<TResult>>([]);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [lastSearchedValue, setLastSearchedValue] = useState("");
+
+  // Sync parent-provided initial value
+  useEffect(() => {
+    setSearchTerm(initialLabel);
+  }, [initialLabel]);
+
+  // Debounced search effect
   useEffect(() => {
     let cancelled = false;
 
     const handler = setTimeout(async () => {
-      if (!internalValue || internalValue === lastSearchedValue) {
+      if (!searchTerm || searchTerm === lastSearchedValue) {
         return;
       }
 
       setIsLoading(true);
       try {
-        const newResults = await onChange(internalValue);
+        const res = await onSubmit(searchTerm);
         if (!cancelled) {
-          setResults(newResults);
-          setLastSearchedValue(internalValue);
+          setResults(res);
+          setErrorMessage(null);
+          setLastSearchedValue(searchTerm);
         }
       } catch (error) {
-        if (!cancelled) setResults([]);
-        console.error(error);
+        if (!cancelled) {
+          setErrorMessage(
+            error instanceof Error ? error.message : "Encountered unknown error"
+          );
+          setResults([]);
+        }
       } finally {
         if (!cancelled) setIsLoading(false);
       }
@@ -58,11 +69,13 @@ export default function AutocompleteInput<
       cancelled = true;
       clearTimeout(handler);
     };
-  }, [internalValue, delay, onChange, lastSearchedValue]);
+  }, [searchTerm, delay, onSubmit, lastSearchedValue]);
 
-  const handleSelectResult = (resultData: Result<TResult>["data"]) => {
-    onSelect(resultData);
-    setResults([]);
+  const handleSelectResult = (result: TResult) => {
+    setSearchTerm(result.label); // fill input with chosen label
+    setLastSearchedValue(result.label); // 👈 prevent re-search
+    setResults([]); // close dropdown
+    onSelectResult(result); // notify parent
   };
 
   return (
@@ -71,22 +84,24 @@ export default function AutocompleteInput<
         {label}
       </label>
       <div className="relative">
-        {leftIcon && (
-          <span className="absolute left-3 inset-y-0 my-auto">{leftIcon}</span>
+        {renderLeftIcon && (
+          <div className="absolute left-3 inset-y-0 my-auto pointer-events-none flex items-center justify-center">
+            {renderLeftIcon()}
+          </div>
         )}
         <input
           type="text"
           id={inputId}
           placeholder={placeholder}
-          value={internalValue}
-          onChange={(e) => setInternalValue(e.target.value)}
-          className={`is-input pr-3 ${leftIcon ? "pl-12" : ""}`}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className={`is-input pr-3 ${renderLeftIcon ? "pl-11" : "pl-3"}`}
         />
         <div
           className={
             isLoading ? "absolute right-3 inset-y-0 my-auto spin-animation" : ""
           }
-        ></div>
+        />
         <div
           className={`mt-1 w-full bg-white absolute rounded-md shadow-md ring-1 ring-gray-200 ring-opacity-5 ${
             results.length === 0 ? "hidden" : ""
@@ -95,16 +110,19 @@ export default function AutocompleteInput<
         >
           {results.map((result, index) => (
             <div
-              onClick={() => handleSelectResult(result.data)}
-              key={index}
+              key={(result as any).id ?? index}
+              onClick={() => handleSelectResult(result)}
               className="p-2 hover:bg-gray-100 cursor-pointer"
               role="option"
             >
-              {result.element}
+              {result.label}
             </div>
           ))}
         </div>
       </div>
+      {errorMessage && (
+        <div className="text-red-500 text-sm mt-1">{errorMessage}</div>
+      )}
     </div>
   );
 }
