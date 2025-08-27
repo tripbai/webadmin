@@ -79,7 +79,7 @@ export default function CreateOrganizationForm({ onSuccess, onCancel }: Props) {
           label="Business Address"
           placeholder="Search for a location..."
         />
-        <OrganizationTypeSelect />
+        <OrganizationTypeSelect orgType="business" />
       </div>
       <div className="w-full pt-6 flex justify-end space-x-2">
         <SimpleButton type="secondary" text="Cancel" onClick={onCancel} />

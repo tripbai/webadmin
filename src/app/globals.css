@@ -115,6 +115,7 @@ body {
   }
 
   .is-select {
+    height: 41px;
     @apply px-2 py-2 pr-4 outline-none border border-gray-500 shadow-sm rounded-lg;
   }
 

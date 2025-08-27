@@ -17,6 +17,7 @@ export default function useForm<T extends { [key: string]: any }>({
 }: UseFormOptions<T>) {
   const [values, setValues] = useState<T>(initialValues);
   const [errors, setErrors] = useState<Errors<T>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const initialRef = useRef(initialValues);
 
   // computed at render
@@ -38,6 +39,7 @@ export default function useForm<T extends { [key: string]: any }>({
    */
   const submitForm = async (nextValues?: T) => {
     const updated = nextValues ?? values;
+    setIsSubmitting(true);
     try {
       if (onSubmit) {
         await onSubmit(updated);
@@ -54,6 +56,8 @@ export default function useForm<T extends { [key: string]: any }>({
           error instanceof Error ? error : new Error("Unknown error")
         );
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -69,6 +73,7 @@ export default function useForm<T extends { [key: string]: any }>({
     values,
     errors,
     hasChange,
+    isSubmitting,
     setValue,
     setError,
     submitForm,

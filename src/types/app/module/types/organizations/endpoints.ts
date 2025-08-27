@@ -67,6 +67,7 @@ export type InternalGetOrganization = {
   };
   response: {
     entity_id: Core.Entity.Id;
+    business_name: string;
     profile_photo: Core.Uploads.FilePath | null;
     cover_photo: Core.Uploads.FilePath | null;
     status: Fields.Status;
@@ -87,6 +88,8 @@ export type InternalGetOrganization = {
     mobile_number: string | null;
     telephone_number: string | null;
     email_address: IdentityAuthority.Users.Fields.EmailAddress | null;
+    created_at: string;
+    updated_at: string;
   };
 };
 export type BackfillOrganizationSnippet = {

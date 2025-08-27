@@ -1,33 +1,36 @@
 import RadioSelect from "@/components/forms/radios/RadioSelect";
-import PrimarySelectMenu from "@/components/forms/select-menus/PrimarySelectMenu";
 import { useState } from "react";
 
-export default function OrganizationTypeSelect() {
+type Props = {
+  orgType: "business" | "personal";
+  onChange?: (value: "business" | "personal") => void;
+};
+
+export default function OrganizationTypeSelect({ orgType, onChange }: Props) {
   const [selectedType, setSelectedType] = useState<"business" | "personal">(
-    "business"
+    orgType
   );
+
   return (
     <div>
       <label htmlFor="organization-type" className="text-gray-600 text-sm">
         Organization Type
       </label>
+
       <RadioSelect
         options={[
-          {
-            value: "business",
-            label: "Business",
-            isPreselected: selectedType === "business",
-          },
-          {
-            value: "personal",
-            label: "Personal",
-            isPreselected: selectedType === "personal",
-          },
+          { value: "business", label: "Business" },
+          { value: "personal", label: "Personal" },
         ]}
+        value={selectedType}
         name="organization-type"
         orientation="horizontal"
-        onChange={(value) => setSelectedType(value)}
+        onChange={(value) => {
+          setSelectedType(value);
+          onChange?.(value);
+        }}
       />
+
       <div className="mt-2">
         <div className="flex justify-between p-4 rounded-md bg-blue-50 border border-blue-300">
           <div className="flex gap-3 sm:items-center">
