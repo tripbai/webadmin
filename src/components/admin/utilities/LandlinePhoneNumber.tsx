@@ -19,7 +19,6 @@ export default function LandlinePhoneNumber({ label, onChange }: Props) {
       }}
       format={(value) => {
         const formatted = formatPhilippineNumber(value);
-        console.log({ value, formatted });
         return formatted;
       }}
       placeholder="0000000000"
