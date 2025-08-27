@@ -9,6 +9,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import { assertIsOrganizationBusinessName } from "@/services/tripbai/organizationAssertions";
 import SearchLocation from "@/components/admin/locations/SearchLocation";
+import LandlinePhoneNumber from "@/components/admin/utilities/LandlinePhoneNumber";
+import MobilePhoneNumber from "@/components/admin/utilities/MobilePhoneNumber";
 
 type Props = {
   onSuccess: () => void;
@@ -68,6 +70,10 @@ export default function CreateOrganizationForm({ onSuccess, onCancel }: Props) {
             }
           }}
         />
+        <div className="flex items-center space-x-2">
+          <LandlinePhoneNumber label="Landline Number (Optional)" />
+          <MobilePhoneNumber label="Mobile Number (Optional)" />
+        </div>
         <SearchLocation
           label="Business Address"
           placeholder="Search for a location..."
