@@ -11,6 +11,7 @@ import { assertIsOrganizationBusinessName } from "@/services/tripbai/organizatio
 import SearchLocation from "@/components/admin/locations/SearchLocation";
 import LandlinePhoneNumber from "@/components/admin/utilities/LandlinePhoneNumber";
 import MobilePhoneNumber from "@/components/admin/utilities/MobilePhoneNumber";
+import OrganizationTypeSelect from "../utilities/OrganizationTypeSelect";
 
 type Props = {
   onSuccess: () => void;
@@ -78,6 +79,7 @@ export default function CreateOrganizationForm({ onSuccess, onCancel }: Props) {
           label="Business Address"
           placeholder="Search for a location..."
         />
+        <OrganizationTypeSelect />
       </div>
       <div className="w-full pt-6 flex justify-end space-x-2">
         <SimpleButton type="secondary" text="Cancel" onClick={onCancel} />
