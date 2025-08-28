@@ -86,7 +86,7 @@ export default function FeatureEditor({
     }
   }, [selectedFeature]);
   return (
-    <section id="user-profile" className="w-full">
+    <section className="w-full">
       <h3 className="text-lg font-semibold">Update Features</h3>
       <p className="text-gray-500 mt-1">
         Modify feature settings and configurations.
@@ -134,7 +134,7 @@ export default function FeatureEditor({
               await submitForm();
             }}
             onComplete={async () => {
-              toast.success("Organization package updated successfully!");
+              toast.success("Feature updated successfully!");
             }}
             text="Save Changes"
             type="primary"

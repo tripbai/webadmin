@@ -10,6 +10,7 @@ type Props<TResult extends AutocompleteResult> = {
   label: string;
   onSubmit: (searchTerm: string) => Promise<Array<TResult>>;
   onSelectResult: (result: TResult) => void;
+  isDisabled?: boolean;
   initialLabel?: string; // allow parent to pass initial label
   delay?: number; // debounce delay
   renderLeftIcon?: () => JSX.Element;
@@ -22,6 +23,7 @@ export default function AutocompleteInput<TResult extends AutocompleteResult>({
   onSelectResult,
   renderLeftIcon,
   initialLabel = "",
+  isDisabled,
   delay = 800,
 }: Props<TResult>) {
   const inputId = useId();
@@ -30,6 +32,7 @@ export default function AutocompleteInput<TResult extends AutocompleteResult>({
   const [results, setResults] = useState<Array<TResult>>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [lastSearchedValue, setLastSearchedValue] = useState("");
+  const [hasSearched, setHasSearched] = useState(false);
 
   // Sync parent-provided initial value
   useEffect(() => {
@@ -92,9 +95,14 @@ export default function AutocompleteInput<TResult extends AutocompleteResult>({
         <input
           type="text"
           id={inputId}
+          disabled={isDisabled}
           placeholder={placeholder}
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => {
+            console.log("triggered");
+            setSearchTerm(e.target.value);
+            setHasSearched(true);
+          }}
           className={`is-input pr-3 ${renderLeftIcon ? "pl-11" : "pl-3"}`}
         />
         <div
@@ -104,7 +112,7 @@ export default function AutocompleteInput<TResult extends AutocompleteResult>({
         />
         <div
           className={`mt-1 w-full bg-white absolute rounded-md shadow-md ring-1 ring-gray-200 ring-opacity-5 ${
-            results.length === 0 ? "hidden" : ""
+            results.length === 0 || !hasSearched ? "hidden" : ""
           }`}
           role="listbox"
         >

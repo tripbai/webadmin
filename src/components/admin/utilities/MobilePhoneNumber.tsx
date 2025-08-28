@@ -4,11 +4,16 @@ import { useState } from "react";
 
 type Props = {
   label: string;
+  initialValue?: string;
   onChange?: (value: string) => void;
 };
 
-export default function MobilePhoneNumber({ label, onChange }: Props) {
-  const [value, setValue] = useState("");
+export default function MobilePhoneNumber({
+  label,
+  initialValue,
+  onChange,
+}: Props) {
+  const [value, setValue] = useState(initialValue || "");
   return (
     <DualRepresentationInput
       value={value}

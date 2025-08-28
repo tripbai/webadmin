@@ -4,9 +4,10 @@ type Props = {
   value: string;
   error: string | null;
   onChange: (value: string) => Promise<void>;
+  label?: string;
 };
 
-export default function EmailAddress({ value, error, onChange }: Props) {
+export default function EmailAddress({ value, error, onChange, label }: Props) {
   const [email, setEmail] = useState(value);
   const [isLoading, setIsLoading] = useState(false);
   const handleBlur = async () => {
@@ -28,7 +29,7 @@ export default function EmailAddress({ value, error, onChange }: Props) {
   return (
     <div className="">
       <label htmlFor={createLabelId()} className="text-gray-600 text-sm">
-        Email Address
+        {label || "Email Address"}
       </label>
       <div className="relative">
         <svg

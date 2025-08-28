@@ -6,12 +6,16 @@ type Props = {
   label: string;
   placeholder: string;
   initialLocationId?: string;
+  isDisabled?: boolean;
+  onChange?: (locationId: string) => void;
 };
 
 export default function SearchLocation({
   label,
   placeholder,
   initialLocationId,
+  isDisabled,
+  onChange,
 }: Props) {
   let initialLabel: string | undefined = undefined;
   if (initialLocationId) {
@@ -23,6 +27,8 @@ export default function SearchLocation({
     <AutocompleteInput
       placeholder={placeholder}
       label={label}
+      initialLabel={initialLabel}
+      isDisabled={isDisabled}
       onSubmit={async (searchTerm) => {
         const results = searchLocations(searchTerm, {
           limit: 5,
@@ -35,7 +41,9 @@ export default function SearchLocation({
         });
       }}
       onSelectResult={(result) => {
-        console.log("Selected location:", result);
+        if (onChange) {
+          onChange(result.value);
+        }
       }}
       renderLeftIcon={() => (
         <svg
