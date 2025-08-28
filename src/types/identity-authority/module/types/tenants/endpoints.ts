@@ -120,3 +120,14 @@ export type GetTenantByUserId = {
     archived_at: string | null;
   };
 };
+export type GetTenantUsers = {
+  request: {
+    path: "/identity-authority/tenants/:tenant_id/users";
+    method: "GET";
+    data: {};
+  };
+  response: Array<{
+    user_id: Core.Entity.Id;
+    is_owner: boolean;
+  }>;
+};

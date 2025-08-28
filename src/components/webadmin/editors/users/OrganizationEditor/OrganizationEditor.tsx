@@ -7,6 +7,8 @@ import FeatureEditor from "@/components/webadmin/utilities/FeatureEditor";
 import AddressForm from "@/components/webadmin/utilities/AddressForm";
 import ContactsForm from "@/components/webadmin/utilities/ContactsForm";
 import ButtonWithSpinner from "@/components/forms/buttons/ButtonWithSpinner";
+import OrganizationStores from "./OrganizationStores";
+import OrganizationUsers from "./OrganizationUsers";
 
 type Props = {
   organization: TripBai.Organizations.Endpoints.InternalGetOrganization["response"];
@@ -16,6 +18,10 @@ export default function OrganizationEditor({ organization }: Props) {
   return (
     <>
       <OrganizationDetails organization={organization} />
+      <hr className="border-t border-gray-300 my-4" />
+      <OrganizationStores organization={organization} />
+      <hr className="border-t border-gray-300 my-4" />
+      <OrganizationUsers organization={organization} />
       <hr className="border-t border-gray-300 my-4" />
       <OrganizationPackage organization={organization} />
       <hr className="border-t border-gray-300 my-4" />
@@ -43,7 +49,7 @@ export default function OrganizationEditor({ organization }: Props) {
       />
       <hr className="border-t border-gray-300 my-4" />
       <section className="w-full space-y-4">
-        <div id="archive-user" className="flex justify-between">
+        <div id="archive-organization" className="flex justify-between">
           <div>
             <h3 className="font-semibold">Archive Organization</h3>
             <p className="text-gray-500 mt-1">
